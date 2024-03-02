@@ -1,0 +1,104 @@
+[gd_scene load_steps=11 format=3 uid="uid://of8ap7rcc8ms"]
+
+[ext_resource type="Script" path="res://scenes/UI/HeartRate.gd" id="1_fohfv"]
+[ext_resource type="Texture2D" uid="uid://dhd3cku74os2g" path="res://assets/2d/Icons/HeartRate.png" id="1_yw3pj"]
+[ext_resource type="Script" path="res://scenes/UI/Water.gd" id="2_ahvje"]
+[ext_resource type="Texture2D" uid="uid://bpjitb6bho035" path="res://assets/2d/Icons/Water.png" id="2_jp02a"]
+[ext_resource type="Script" path="res://scenes/UI/HeartTexture.gd" id="2_x5pqa"]
+[ext_resource type="Texture2D" uid="uid://cnjqai4ar01s1" path="res://assets/2d/Icons/Food.png" id="3_o6il6"]
+[ext_resource type="Script" path="res://scenes/UI/Food.gd" id="3_wwkhe"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t8jif"]
+bg_color = Color(0.956863, 0.262745, 0.211765, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3vm1i"]
+bg_color = Color(0.392157, 0.709804, 0.964706, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oumjr"]
+bg_color = Color(1, 0.439216, 0.262745, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="RationsMeter" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -321.0
+offset_top = -252.0
+offset_right = -25.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="HeartRate" type="ProgressBar" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 200)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_t8jif")
+max_value = 200.0
+value = 80.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("1_fohfv")
+
+[node name="Water" type="ProgressBar" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 200)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_3vm1i")
+value = 100.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("2_ahvje")
+
+[node name="Food" type="ProgressBar" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 200)
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_oumjr")
+value = 100.0
+fill_mode = 3
+show_percentage = false
+script = ExtResource("3_wwkhe")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="HeartTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("1_yw3pj")
+script = ExtResource("2_x5pqa")
+
+[node name="WaterTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("2_jp02a")
+
+[node name="FoodTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("3_o6il6")
+
+[connection signal="value_changed" from="VBoxContainer/HBoxContainer/HeartRate" to="VBoxContainer/HBoxContainer2/HeartTexture" method="_on_heart_rate_value_changed"]

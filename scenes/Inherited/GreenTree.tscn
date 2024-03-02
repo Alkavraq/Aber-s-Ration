@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://bdk5pjkdrgn0"]
+
+[ext_resource type="PackedScene" uid="uid://2su5lqanrkx7" path="res://assets/tree green.gltf" id="1_bflro"]
+
+[node name="blockbench_export" instance=ExtResource("1_bflro")]

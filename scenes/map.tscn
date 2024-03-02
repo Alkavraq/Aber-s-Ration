@@ -1,0 +1,336 @@
+[gd_scene load_steps=41 format=3 uid="uid://cl2xqcq37xewh"]
+
+[ext_resource type="PackedScene" uid="uid://18k2xf30c6sn" path="res://scenes/TerrainMap.tscn" id="1_ey1hm"]
+[ext_resource type="PackedScene" uid="uid://v8lpsnxvdnoj" path="res://scenes/Inherited/Tree.tscn" id="2_rq3kr"]
+[ext_resource type="PackedScene" uid="uid://lo5jaylrlv57" path="res://scenes/Inherited/DeadTree.tscn" id="3_hpjow"]
+[ext_resource type="Texture2D" uid="uid://5l7rdkcwu3mq" path="res://assets/2d/textures/Road002_1K-PNG_Color.png" id="4_v1qrj"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="5_dcjb7"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="6_yojl2"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/create_inside_random.gd" id="7_c6vic"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="8_umnxr"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/relax.gd" id="9_m8so5"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/offset_position.gd" id="11_8fmmk"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/project_on_terrain3d.gd" id="11_vq5pc"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_item.gd" id="11_wfi4c"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="12_mcbhu"]
+[ext_resource type="Resource" uid="uid://df0q318nnkvae" path="res://resources/ScatterMap.tres" id="13_b8rmq"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/create_along_edge_continuous.gd" id="14_cm1p4"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/path_shape.gd" id="14_ovpav"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/offset_rotation.gd" id="15_f5t7k"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="16_xn8qo"]
+
+[sub_resource type="Gradient" id="Gradient_3ll72"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_0juvr"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dh3nu"]
+seamless = true
+color_ramp = SubResource("Gradient_3ll72")
+noise = SubResource("FastNoiseLite_0juvr")
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_7xa5h"]
+_shader_parameters = {
+"_mouse_layer": 2147483648,
+"blend_sharpness": null,
+"height_blending": false,
+"macro_variation1": null,
+"macro_variation2": null,
+"noise1_angle": null,
+"noise1_offset": null,
+"noise1_scale": null,
+"noise2_scale": null,
+"noise3_scale": null,
+"noise_texture": SubResource("NoiseTexture2D_dh3nu"),
+"world_noise_blend_far": 1.0,
+"world_noise_blend_near": 0.0,
+"world_noise_height": 64.0,
+"world_noise_lod_distance": 7500.0,
+"world_noise_max_octaves": 4,
+"world_noise_min_octaves": 2,
+"world_noise_offset": Vector3(0, 0, -5.24),
+"world_noise_scale": 11.2
+}
+world_background = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pxx5v"]
+albedo_texture = ExtResource("4_v1qrj")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_tmjup"]
+material = SubResource("StandardMaterial3D_pxx5v")
+size = Vector2(6, 6)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7gk76"]
+size = Vector3(6, 0.01, 100)
+
+[sub_resource type="Resource" id="Resource_ikl53"]
+script = ExtResource("7_c6vic")
+amount = 1600
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = true
+reference_frame = 1
+
+[sub_resource type="Resource" id="Resource_3uhlj"]
+script = ExtResource("8_umnxr")
+position = Vector3(0.15, 0.15, 0.15)
+rotation = Vector3(20, 360, 20)
+scale = Vector3(0.1, 0.2, 0.1)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_2thlf"]
+script = ExtResource("9_m8so5")
+iterations = 3
+offset_step = 0.2
+consecutive_step_multiplier = 0.75
+use_computeshader = true
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = true
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_pf8g8"]
+script = ExtResource("11_vq5pc")
+terrain_node = NodePath("../Terrain3D")
+align_with_collision_normal = true
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_pikqr"]
+script = ExtResource("11_8fmmk")
+operation = 0
+position = Vector3(0, -0.2, 0)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_o3mft"]
+script = ExtResource("6_yojl2")
+stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_ikl53"), SubResource("Resource_3uhlj"), SubResource("Resource_2thlf"), SubResource("Resource_pf8g8"), SubResource("Resource_pikqr")])
+
+[sub_resource type="Curve3D" id="Curve3D_wvfbq"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 1.16862, 0, 0.553209, 0, 0, 0, 0, 0, 0, 2.83195, 0, -0.917296, 0, 0, 0, 0, 0, 0, 4.80424, 0, -2.05455, 0, 0, 0, 0, 0, 0, 7.09112, 0, -4.63914, 0, 0, 0, 0, 0, 0, 10.5779, 0, -7.00716, 0, 0, 0, 0, 0, 0, 13.546, 0, -5.75579, 0, 0, 0, 0, 0, 0, 15.084, 0, -4.09705, 0, 0, 0, 0, 0, 0, 16.54, 0, -2.75869, 0, 0, 0, 0, 0, 0, 17.1187, 0, 0.784117, 0, 0, 0, 0, 0, 0, 17.6405, 0, 3.87129, 0, 0, 0, 0, 0, 0, 20.2562, 0, 5.91837, 0, 0, 0, 0, 0, 0, 24.4329, 0, 6.45453, 0, 0, 0, 0, 0, 0, 16.5573, 0, -3.81759, 0, 0, 0, 0, 0, 0, 16.1198, 0, -4.69442, 0, 0, 0, 0, 0, 0, 25.4962, 0, 5.00543, 0, 0, 0, 0, 0, 0, 15.9531, 0, -3.68262, 0, 0, 0, 0, 0, 0, 14.2503, 0, -3.85151, 0, 0, 0, 0, 0, 0, 15.2843, 0, -5.99838, 0, 0, 0, 0, 0, 0, 17.216, 0, -4.16169),
+"tilts": PackedFloat32Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 19
+
+[sub_resource type="Resource" id="Resource_1lm61"]
+script = ExtResource("14_ovpav")
+closed = true
+thickness = 0.0
+curve = SubResource("Curve3D_wvfbq")
+
+[sub_resource type="Resource" id="Resource_1occs"]
+script = ExtResource("14_cm1p4")
+item_length = 3.53
+ignore_slopes = false
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_68thu"]
+script = ExtResource("8_umnxr")
+position = Vector3(0.001, 0.001, 0.001)
+rotation = Vector3(0.001, 0.001, 0.001)
+scale = Vector3(0.001, 0.2, 0.001)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_6mbo8"]
+script = ExtResource("15_f5t7k")
+operation = 0
+rotation = Vector3(0, 0, 0)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_wsfq1"]
+script = ExtResource("11_vq5pc")
+terrain_node = NodePath("../Terrain3D")
+align_with_collision_normal = false
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_bm0vt"]
+script = ExtResource("6_yojl2")
+stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_1occs"), SubResource("Resource_68thu"), SubResource("Resource_6mbo8"), SubResource("Resource_wsfq1")])
+
+[sub_resource type="Resource" id="Resource_0b171"]
+script = ExtResource("16_xn8qo")
+size = Vector3(29.6142, 4.28716, 12.1105)
+
+[sub_resource type="Resource" id="Resource_6abig"]
+script = ExtResource("16_xn8qo")
+size = Vector3(300, 11.825, 300)
+
+[node name="Map" type="Node3D"]
+
+[node name="Terrain3D" parent="." instance=ExtResource("1_ey1hm")]
+material = SubResource("Terrain3DMaterial_7xa5h")
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="Root Scene" parent="Trees" instance=ExtResource("2_rq3kr")]
+transform = Transform3D(0.836697, 0, -0.547665, 0, 1, 0, 0.547665, 0, 0.836697, 0.406848, 0, -2.2991)
+
+[node name="Root Scene5" parent="Trees" instance=ExtResource("2_rq3kr")]
+transform = Transform3D(0.999645, 0, -0.026648, 0, 1, 0, 0.026648, 0, 0.999645, -20.4527, 0, -3.63288)
+
+[node name="Root Scene2" parent="Trees" instance=ExtResource("3_hpjow")]
+transform = Transform3D(0.0141368, 0, 0.9999, 0, 1, 0, -0.9999, 0, 0.0141368, 0, 0, 3.28571)
+
+[node name="Root Scene3" parent="Trees" instance=ExtResource("3_hpjow")]
+transform = Transform3D(0.0139008, 0.181961, 0.983207, -0.00257234, 0.983306, -0.181943, -0.9999, 0, 0.0141368, -22.3093, 1.15085, 5.038)
+
+[node name="Root Scene4" parent="Trees" instance=ExtResource("3_hpjow")]
+transform = Transform3D(-0.970694, 0.0412664, 0.236747, -0.00257234, 0.983306, -0.181943, -0.240303, -0.17722, -0.954383, -20.0966, 0.416697, 12.7674)
+
+[node name="Road" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.057, 0.62, 0)
+
+[node name="RoadMesh" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, 0)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh8" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, 6)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh9" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, 12)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh10" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, 18)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh11" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, 24)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh12" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, 30)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh13" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, 36)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh2" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, -6)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh3" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, -12)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh4" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, -18)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh5" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, -24)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh6" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, -30)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="RoadMesh7" type="MeshInstance3D" parent="Road"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0.01, -36)
+mesh = SubResource("PlaneMesh_tmjup")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Road"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Road/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.5, 0, 0)
+shape = SubResource("BoxShape3D_7gk76")
+
+[node name="ProtonScatterTrees" type="Node3D" parent="."]
+script = ExtResource("5_dcjb7")
+render_mode = 1
+keep_static_colliders = true
+modifier_stack = SubResource("Resource_o3mft")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+
+[node name="ScatterItem" type="Node3D" parent="ProtonScatterTrees"]
+script = ExtResource("11_wfi4c")
+source_scale_multiplier = 1.5
+path = "res://scenes/Inherited/Tree.tscn"
+
+[node name="ScatterItem2" type="Node3D" parent="ProtonScatterTrees"]
+script = ExtResource("11_wfi4c")
+source_scale_multiplier = 1.5
+path = "res://scenes/Inherited/DeadTree.tscn"
+
+[node name="ScatterShape" type="Node3D" parent="ProtonScatterTrees"]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 150, 0, 0)
+visible = false
+script = ExtResource("12_mcbhu")
+shape = ExtResource("13_b8rmq")
+
+[node name="Negative" type="Node3D" parent="ProtonScatterTrees"]
+visible = false
+script = ExtResource("12_mcbhu")
+negative = true
+shape = SubResource("Resource_1lm61")
+
+[node name="ProtonScatterFences" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0361533, 0)
+script = ExtResource("5_dcjb7")
+render_mode = 1
+keep_static_colliders = true
+modifier_stack = SubResource("Resource_bm0vt")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+
+[node name="ScatterItem" type="Node3D" parent="ProtonScatterFences"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.417215, 0)
+script = ExtResource("11_wfi4c")
+source_scale_multiplier = 1.2
+path = "res://scenes/Inherited/DoubleFence.tscn"
+
+[node name="Negativve" type="Node3D" parent="ProtonScatterFences"]
+visible = false
+script = ExtResource("12_mcbhu")
+shape = SubResource("Resource_0b171")
+
+[node name="ScatterShape" type="Node3D" parent="ProtonScatterFences"]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 150, 0, 0)
+visible = false
+script = ExtResource("12_mcbhu")
+shape = SubResource("Resource_6abig")

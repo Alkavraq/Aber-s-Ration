@@ -1,0 +1,70 @@
+[gd_scene load_steps=14 format=3 uid="uid://18k2xf30c6sn"]
+
+[ext_resource type="Terrain3DStorage" uid="uid://b6v3ru7pe4yux" path="res://resources/new_terrain_3d_storage.res" id="1_kue6a"]
+[ext_resource type="Texture2D" uid="uid://ddprscrpsofah" path="res://addons/demo/assets/textures/ground037_alb_ht.png" id="1_mnjcn"]
+[ext_resource type="Texture2D" uid="uid://c1ots7w6i0i1q" path="res://addons/demo/assets/textures/ground037_nrm_rgh.png" id="2_agm31"]
+[ext_resource type="Texture2D" uid="uid://br7bfxcxh60df" path="res://addons/demo/assets/textures/rock030_alb_ht.png" id="3_e281n"]
+[ext_resource type="Texture2D" uid="uid://cr72kjil43vgj" path="res://addons/demo/assets/textures/rock030_nrm_rgh.png" id="4_g02lp"]
+
+[sub_resource type="Gradient" id="Gradient_1f76d"]
+offsets = PackedFloat32Array(0.2, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_4nmfx"]
+noise_type = 2
+frequency = 0.03
+cellular_jitter = 3.0
+cellular_return_type = 0
+domain_warp_enabled = true
+domain_warp_type = 1
+domain_warp_amplitude = 50.0
+domain_warp_fractal_type = 2
+domain_warp_fractal_lacunarity = 1.5
+domain_warp_fractal_gain = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_g0eq1"]
+seamless = true
+color_ramp = SubResource("Gradient_1f76d")
+noise = SubResource("FastNoiseLite_4nmfx")
+
+[sub_resource type="Terrain3DMaterial" id="Terrain3DMaterial_gcar8"]
+_shader_parameters = {
+"_mouse_layer": 2147483648,
+"blend_sharpness": null,
+"height_blending": null,
+"macro_variation1": null,
+"macro_variation2": null,
+"noise1_angle": null,
+"noise1_offset": null,
+"noise1_scale": null,
+"noise2_scale": null,
+"noise3_scale": null,
+"noise_texture": SubResource("NoiseTexture2D_g0eq1")
+}
+
+[sub_resource type="Terrain3DTexture" id="Terrain3DTexture_0nemt"]
+name = "Grass"
+albedo_color = Color(0.2, 0.207843, 0.137255, 1)
+albedo_texture = ExtResource("1_mnjcn")
+normal_texture = ExtResource("2_agm31")
+
+[sub_resource type="Terrain3DTexture" id="Terrain3DTexture_tx4um"]
+name = "Rock"
+texture_id = 1
+albedo_texture = ExtResource("3_e281n")
+normal_texture = ExtResource("4_g02lp")
+
+[sub_resource type="Terrain3DTexture" id="Terrain3DTexture_uaark"]
+name = "Path"
+texture_id = 2
+albedo_color = Color(0.282353, 0.207843, 0.172549, 1)
+albedo_texture = ExtResource("1_mnjcn")
+normal_texture = ExtResource("2_agm31")
+
+[sub_resource type="Terrain3DTextureList" id="Terrain3DTextureList_7o86m"]
+textures = Array[Terrain3DTexture]([SubResource("Terrain3DTexture_0nemt"), SubResource("Terrain3DTexture_tx4um"), SubResource("Terrain3DTexture_uaark")])
+
+[node name="Terrain3D" type="Terrain3D"]
+storage = ExtResource("1_kue6a")
+material = SubResource("Terrain3DMaterial_gcar8")
+texture_list = SubResource("Terrain3DTextureList_7o86m")

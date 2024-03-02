@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="ProtonScatterBoxShape" load_steps=2 format=3 uid="uid://df0q318nnkvae"]
+
+[ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/box_shape.gd" id="1_07vov"]
+
+[resource]
+script = ExtResource("1_07vov")
+size = Vector3(300, 11.825, 300)

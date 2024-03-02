@@ -1,0 +1,54 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmrn14kxy0p0p"]
+
+[ext_resource type="PackedScene" uid="uid://dvp2xhvciw1ag" path="res://assets/sign.gltf" id="1_eqr2y"]
+[ext_resource type="Script" path="res://scenes/Inherited/Pancarte.gd" id="2_awgk7"]
+[ext_resource type="Texture2D" uid="uid://ct40ohsm8wri" path="res://addons/ActionIcon/Keyboard/E.png" id="3_dl7oy"]
+[ext_resource type="Texture2D" uid="uid://bwvgv5xy3cgkx" path="res://assets/2d/Icons/Pancarte.png" id="4_28wtp"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_scf0p"]
+data = PackedVector3Array(0.625, 1.6875, 0.125, 0.625, 1.6875, -0.125, 0.625, 0.875, 0.125, 0.625, 0.875, 0.125, 0.625, 1.6875, -0.125, 0.625, 0.875, -0.125, -0.625, 1.6875, -0.125, -0.625, 1.6875, 0.125, -0.625, 0.875, -0.125, -0.625, 0.875, -0.125, -0.625, 1.6875, 0.125, -0.625, 0.875, 0.125, -0.625, 1.6875, -0.125, 0.625, 1.6875, -0.125, -0.625, 1.6875, 0.125, -0.625, 1.6875, 0.125, 0.625, 1.6875, -0.125, 0.625, 1.6875, 0.125, -0.625, 0.875, 0.125, 0.625, 0.875, 0.125, -0.625, 0.875, -0.125, -0.625, 0.875, -0.125, 0.625, 0.875, 0.125, 0.625, 0.875, -0.125, -0.625, 1.6875, 0.125, 0.625, 1.6875, 0.125, -0.625, 0.875, 0.125, -0.625, 0.875, 0.125, 0.625, 1.6875, 0.125, 0.625, 0.875, 0.125, 0.625, 1.6875, -0.125, -0.625, 1.6875, -0.125, 0.625, 0.875, -0.125, 0.625, 0.875, -0.125, -0.625, 1.6875, -0.125, -0.625, 0.875, -0.125)
+
+[node name="blockbench_export" instance=ExtResource("1_eqr2y")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Node/cube2" index="0"]
+script = ExtResource("2_awgk7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node/cube2/StaticBody3D" index="0"]
+shape = SubResource("ConcavePolygonShape3D_scf0p")
+
+[node name="Sprite3D" type="Sprite3D" parent="." index="1"]
+unique_name_in_owner = true
+transform = Transform3D(0.415, 0, 0, 0, 0.415, 0, 0, 0, 0.415, 0, 1.92422, 0.222953)
+visible = false
+billboard = 1
+texture = ExtResource("3_dl7oy")
+
+[node name="Control" type="Control" parent="." index="2"]
+layout_mode = 3
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+scale = Vector2(0.4, 0.4)
+size_flags_horizontal = 0
+size_flags_vertical = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="Control" index="0"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 80.0
+offset_top = -426.0
+offset_right = 1360.0
+offset_bottom = 426.0
+grow_vertical = 2
+scale = Vector2(1.43, 1.43)
+mouse_filter = 2
+texture = ExtResource("4_28wtp")
