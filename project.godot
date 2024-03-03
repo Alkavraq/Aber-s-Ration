@@ -82,3 +82,5 @@ RMB={
 
 3d_physics/layer_2="Trees"
 3d_physics/layer_5="Monsters"
+3d_physics/layer_6="Character"
+3d_physics/layer_7="Weapons"

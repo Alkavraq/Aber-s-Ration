@@ -9,18 +9,22 @@ var variation
 func _ready() -> void:
 	pass # Replace with function body.
 
+func _physics_process(delta: float) -> void:
+	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if previousYs:
-		variation = (linear_velocity.y - previousYs) *-10
+		variation = (linear_velocity.y - previousYs) *10
 	previousYs = linear_velocity.y
 	if variation:
-		angular_velocity.z = variation
+		rotation.z = variation
+	#pass
 	
-
+	
 func throw():
 	linear_velocity = quaternion * Vector3.MODEL_TOP * throwForce 
+	#look_at(global_transform.origin + linear_velocity, Vector3(0, 1, 0))
 	#var direction = _get_direction()
 	#transform = transform.looking_at(global_position + direction, Vector3.UP)
 	#linear_velocity = direction * throwForce

@@ -49,11 +49,12 @@ size = Vector3(0.373383, 2.07229, 0.201355)
 size = Vector3(0.273, 2.01, 0.151)
 
 [node name="Root Scene" type="RigidBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+collision_layer = 64
 mass = 5.0
 gravity_scale = 0.75
 center_of_mass_mode = 1
 center_of_mass = Vector3(0, 1.5, 0)
+angular_damp_mode = 1
 script = ExtResource("1_n73ig")
 
 [node name="SM_Wep_Pitchfork_01" type="MeshInstance3D" parent="."]
