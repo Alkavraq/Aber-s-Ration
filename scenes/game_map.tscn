@@ -1,10 +1,11 @@
-[gd_scene load_steps=14 format=3 uid="uid://d3lxyhsplxxpd"]
+[gd_scene load_steps=15 format=3 uid="uid://d3lxyhsplxxpd"]
 
 [ext_resource type="PackedScene" uid="uid://cl2xqcq37xewh" path="res://scenes/map.tscn" id="1_uh3fg"]
 [ext_resource type="PackedScene" uid="uid://cdebw5krdiphp" path="res://scenes/Character.tscn" id="2_3f78r"]
 [ext_resource type="PackedScene" uid="uid://dmrn14kxy0p0p" path="res://scenes/Inherited/sign.tscn" id="3_nblt7"]
 [ext_resource type="PackedScene" uid="uid://xnwhgoy7g7vc" path="res://scenes/Inherited/Lantern.tscn" id="4_4u82j"]
 [ext_resource type="PackedScene" uid="uid://of8ap7rcc8ms" path="res://scenes/UI/rations_meter.tscn" id="5_knq6l"]
+[ext_resource type="PackedScene" uid="uid://cs1fr3suo4sio" path="res://scenes/monster.tscn" id="6_28ld7"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_618mf"]
 
@@ -35,13 +36,6 @@ size = Vector3(15.0399, 10.3514, 1)
 size = Vector3(25.4734, 10.3514, 1)
 
 [node name="GameMap" type="Node3D"]
-
-[node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.368049, 0.338438, 0, 0.676876, 0.736097, -0.5, 0.637479, -0.586192, 0, 0, 0)
-light_color = Color(0.882353, 0, 0.227451, 1)
-light_energy = 0.1
-shadow_enabled = true
-sky_mode = 1
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_nkkgk")
@@ -95,3 +89,6 @@ shape = SubResource("BoxShape3D_svrhm")
 [node name="CollisionShape3D8" type="CollisionShape3D" parent="Boundaries/StaticBody3D"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -15.7464, 4.67572, -0.0405273)
 shape = SubResource("BoxShape3D_y368k")
+
+[node name="Monster" parent="." instance=ExtResource("6_28ld7")]
+transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0.979896, 0)

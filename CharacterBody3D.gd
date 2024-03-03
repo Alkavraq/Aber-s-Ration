@@ -20,6 +20,8 @@ var grav_vel: Vector3 # Gravity velocity
 var jump_vel: Vector3 # Jumping velocity
 
 var CampfirePlaced = false
+var weaponArmed = false
+static var setPosition
 
 static var waterDepricationSpeed = 0.5
 static var CurrentWater = 100
@@ -29,15 +31,25 @@ static var heartRate = 80
 
 @onready var camera: Camera3D = $Camera3D
 @onready var RealCampfire = preload("res://scenes/Inherited/CampFire.tscn")
+@onready var WeaponAnimationPlayer = $Camera3D/PitchFork/AnimationPlayer
 
 func _ready() -> void:
 	capture_mouse()
+
+func _process(delta: float) -> void:
+	setPosition = global_position
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("campfire") and CampfirePlaced == false:
 		$Camera3D/RayCast3D/Campfire.visible = !$Camera3D/RayCast3D/Campfire.visible
 	if Input.is_action_just_pressed("LMB") and $Camera3D/RayCast3D/Campfire.visible:
 		placeCampfire()
+	if Input.is_action_just_pressed("LMB") and !$Camera3D/RayCast3D/Campfire.visible and !WeaponAnimationPlayer.is_playing() and !weaponArmed:
+		WeaponAnimationPlayer.play("Hit")
+	if Input.is_action_pressed("RMB") and weaponArmed == false:
+		WeaponAnimationPlayer.play("ReadyToFire")
+	if Input.is_action_just_released("RMB"):
+		WeaponAnimationPlayer.play_backwards("ReadyToFire")
 	if event is InputEventMouseMotion:
 		look_dir = event.relative * 0.001
 		if mouse_captured: _rotate_camera()
@@ -50,7 +62,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func depricate(delta):
-	var extraDepricationFromHeartRate = (heartRate - 80) * 0.02
+	var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
 	if randi_range(1, 2) == 1:
 		CurrentFood = CurrentFood - (foodDepricationSpeed + extraDepricationFromHeartRate) * delta
 	if randi_range(1, 2) == 1:
@@ -62,7 +74,7 @@ func placeCampfire():
 		CampfirePlaced = true
 		var newCampfire = RealCampfire.instantiate()
 		newCampfire.global_position = $Camera3D/RayCast3D/Campfire.global_position
-		$Camera3D/RayCast3D/Campfire.visible =false
+		$Camera3D/RayCast3D/Campfire.visible = false
 		get_parent().add_child(newCampfire)
 
 func capture_mouse() -> void:
@@ -102,3 +114,11 @@ func _jump(delta: float) -> Vector3:
 		return jump_vel
 	jump_vel = Vector3.ZERO if is_on_floor() else jump_vel.move_toward(Vector3.ZERO, gravity * delta)
 	return jump_vel
+
+
+func _on_animation_player_animation_finished(anim_name: StringName) -> void:
+	if anim_name == "ReadyToFire" and !Input.is_action_pressed("RMB"):
+		weaponArmed = false
+	if anim_name == "ReadyToFire" and Input.is_action_pressed("RMB"):
+		print(anim_name)
+		weaponArmed = true

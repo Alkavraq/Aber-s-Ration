@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://cs1fr3suo4sio"]
+
+[ext_resource type="Script" path="res://scenes/monster.gd" id="1_vfn1i"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_efw8p"]
+transparency = 1
+albedo_color = Color(0, 0, 0, 0.768627)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_40571"]
+material = SubResource("StandardMaterial3D_efw8p")
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3l2li"]
+albedo_color = Color(0.831373, 0, 0.12549, 1)
+emission_enabled = true
+emission = Color(0.290196, 0.0588235, 0.0666667, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_nh3jb"]
+material = SubResource("StandardMaterial3D_3l2li")
+radius = 0.05
+height = 0.1
+
+[node name="Monster" type="Node3D"]
+script = ExtResource("1_vfn1i")
+
+[node name="Body" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 3.33141e-09, 0.0047736, 0.0047736)
+mesh = SubResource("CylinderMesh_40571")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, -0.2, 0.0547736, -0.0523868)
+mesh = SubResource("SphereMesh_nh3jb")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 0.2, 0.0547736, -0.0523868)
+mesh = SubResource("SphereMesh_nh3jb")
