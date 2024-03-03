@@ -32,6 +32,7 @@ static var heartRate = 80
 @onready var camera: Camera3D = $Camera3D
 @onready var RealCampfire = preload("res://scenes/Inherited/CampFire.tscn")
 @onready var WeaponAnimationPlayer = $Camera3D/PitchFork/AnimationPlayer
+@onready var Crosshair = $Crosshair/TextureRect
 
 func _ready() -> void:
 	capture_mouse()
@@ -47,9 +48,14 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("LMB") and !$Camera3D/RayCast3D/Campfire.visible and !WeaponAnimationPlayer.is_playing() and !weaponArmed:
 		WeaponAnimationPlayer.play("Hit")
 	if Input.is_action_pressed("RMB") and weaponArmed == false:
+		showCrosshair(true)
 		WeaponAnimationPlayer.play("ReadyToFire")
 	if Input.is_action_just_released("RMB"):
+		weaponArmed = false
+		showCrosshair(false)
 		WeaponAnimationPlayer.play_backwards("ReadyToFire")
+	if Input.is_action_just_pressed("LMB") and weaponArmed:
+		throwWeapon()
 	if event is InputEventMouseMotion:
 		look_dir = event.relative * 0.001
 		if mouse_captured: _rotate_camera()
@@ -61,13 +67,24 @@ func _physics_process(delta: float) -> void:
 	velocity = _walk(delta) + _gravity(delta) + _jump(delta)
 	move_and_slide()
 
+func throwWeapon():
+	pass
+
 func depricate(delta):
 	var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
 	if randi_range(1, 2) == 1:
 		CurrentFood = CurrentFood - (foodDepricationSpeed + extraDepricationFromHeartRate) * delta
 	if randi_range(1, 2) == 1:
 		CurrentWater = CurrentWater - (waterDepricationSpeed + extraDepricationFromHeartRate) * delta
-	
+
+func showCrosshair(value):
+	if value:
+		var tween = create_tween()
+		tween.tween_property(Crosshair, "modulate", Color(1,1,1,1), 0.6)
+		tween.play()
+	elif !value:
+		var tween = create_tween()
+		tween.tween_property(Crosshair, "modulate", Color(1,1,1,0), 0.6)
 
 func placeCampfire():
 	if $Camera3D/RayCast3D/Campfire/RootNode/RayCast3D.is_colliding():
@@ -122,3 +139,14 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "ReadyToFire" and Input.is_action_pressed("RMB"):
 		print(anim_name)
 		weaponArmed = true
+
+func _on_area_body_entered(body: Node3D) -> void:
+	if body.is_in_group("monster") and WeaponAnimationPlayer.current_animation == "Hit":
+		print("killim")
+		for x in body.get_parent().get_parent().get_children():
+			if x.is_in_group("animator"):
+				x.play("Dead")
+				x.get_parent().stopLook()
+				await get_tree().create_timer(1).timeout
+				body.get_parent().get_parent().queue_free()
+		

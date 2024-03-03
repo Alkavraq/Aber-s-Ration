@@ -42,7 +42,7 @@ blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_fxalo")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3ttn1"]
-size = Vector3(0.373383, 2.03044, 0.201355)
+size = Vector3(0.373383, 2.07229, 0.201355)
 
 [sub_resource type="Animation" id="Animation_ub5uo"]
 resource_name = "Hit"
@@ -147,6 +147,7 @@ skeleton = NodePath("")
 
 [node name="Area" type="Area3D" parent="SM_Wep_Pitchfork_01"]
 collision_layer = 8
+collision_mask = 16
 
 [node name="AreaCollisionShape" type="CollisionShape3D" parent="SM_Wep_Pitchfork_01/Area"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.987, 0)

@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://cdebw5krdiphp"]
+[gd_scene load_steps=8 format=3 uid="uid://cdebw5krdiphp"]
 
 [ext_resource type="Script" path="res://CharacterBody3D.gd" id="1_3paqm"]
 [ext_resource type="Script" path="res://scenes/campFireCast.gd" id="2_lo110"]
 [ext_resource type="Script" path="res://scenes/OmniLight3D.gd" id="2_o8hsu"]
 [ext_resource type="PackedScene" uid="uid://dfrfg7xbrn4hj" path="res://scenes/Inherited/CampFire.tscn" id="3_jlk7x"]
 [ext_resource type="PackedScene" uid="uid://rbqa3g2ceei6" path="res://scenes/Inherited/pitchFork.tscn" id="4_e0lpl"]
+[ext_resource type="PackedScene" uid="uid://3qv8dqft1gjr" path="res://scenes/UI/crosshair.tscn" id="6_j38p6"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nosu5"]
 
@@ -45,10 +46,16 @@ visible = false
 [node name="PitchFork" parent="Camera3D" instance=ExtResource("4_e0lpl")]
 transform = Transform3D(-5.11688e-08, -3.33487e-08, 1, -0.975898, 0.218228, -4.26578e-08, -0.218228, -0.975898, -4.37114e-08, 0.515337, -0.890908, 0.487586)
 
+[node name="AreaCollisionShape" parent="Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area" index="0"]
+transform = Transform3D(0.999993, 2.68221e-07, 0, -2.68221e-07, 0.999993, 0, -3.32179e-13, -4.22773e-13, 1, -5.96046e-07, 1.00793, -5.36442e-07)
+
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 light_color = Color(0.498039, 0.415686, 0.301961, 1)
 script = ExtResource("2_o8hsu")
 
+[node name="Crosshair" parent="." instance=ExtResource("6_j38p6")]
+
+[connection signal="body_entered" from="Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area" to="." method="_on_area_body_entered"]
 [connection signal="animation_finished" from="Camera3D/PitchFork/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 
 [editable path="Camera3D/RayCast3D/Campfire"]
