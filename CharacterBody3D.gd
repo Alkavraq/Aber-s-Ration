@@ -26,12 +26,14 @@ var campfire
 var distanceToCampfire = 0.0
 static var setPosition
 
+static var seenByMonstersCount = 0
 const defaultHR = 80
 static var waterDepricationSpeed = 0.5
 static var CurrentWater = 100
 static var foodDepricationSpeed = 0.3
 static var CurrentFood = 100
 static var heartRate = 80
+static var HRfromLooks:=0.0
 
 var globalDelta
 
@@ -49,6 +51,7 @@ func _ready() -> void:
 	capture_mouse()
 
 func _process(delta: float) -> void:
+	#print(seenByMonstersCount)
 	if campfire :
 		distanceToCampfire = self.global_position.distance_to(campfire.global_position)
 		print(distanceToCampfire)
@@ -92,7 +95,8 @@ func throwWeapon():
 		thrownWeapon.throw()
 
 func depricate(delta):
-	heartRate = defaultHR + (clamp((distanceToCampfire-15), 0, 200))/2.5
+	print(HRfromLooks)
+	heartRate = defaultHR + ((clamp((distanceToCampfire-15), 0, 200))/2.5) + HRfromLooks
 	var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
 	if randi_range(1, 2) == 1:
 		CurrentFood = CurrentFood - (foodDepricationSpeed + extraDepricationFromHeartRate) * delta
@@ -168,6 +172,9 @@ func _on_area_body_entered(body: Node3D) -> void:
 		print("killim")
 		for x in body.get_parent().get_parent().get_children():
 			if x.is_in_group("animator"):
+				Player.seenByMonstersCount -= 1
+				var hrTween = create_tween()
+				hrTween.tween_property(Player, "HRfromLooks", 10*Player.seenByMonstersCount, 5)
 				x.play("Dead")
 				x.get_parent().stopLook()
 				await get_tree().create_timer(1).timeout

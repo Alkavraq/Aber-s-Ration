@@ -134,3 +134,7 @@ mesh = SubResource("SphereMesh_nh3jb")
 libraries = {
 "": SubResource("AnimationLibrary_d6b3g")
 }
+
+[node name="PlayerFinder" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -75)
+collision_mask = 33

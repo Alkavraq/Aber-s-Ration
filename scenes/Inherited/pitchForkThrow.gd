@@ -1,7 +1,7 @@
 extends RigidBody3D
 class_name ThrownSpear
 
-@export var throwForce = 15
+@export var throwForce = 20
 
 @onready var SpearKey = $SpearKey
 
@@ -79,6 +79,9 @@ func _on_area_body_entered(body: Node3D) -> void:
 		print("killim")
 		for x in body.get_parent().get_parent().get_children():
 			if x.is_in_group("animator"):
+				Player.seenByMonstersCount -= 1
+				var hrTween = create_tween()
+				hrTween.tween_property(Player, "HRfromLooks", 10*Player.seenByMonstersCount, 5)
 				x.play("Dead")
 				x.get_parent().stopLook()
 				await get_tree().create_timer(1).timeout
