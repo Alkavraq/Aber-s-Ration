@@ -32,6 +32,7 @@ spot_angle = 21.7586
 
 [node name="RayCast3D" type="RayCast3D" parent="Camera3D"]
 target_position = Vector3(0, 0, -5)
+collision_mask = 65
 script = ExtResource("2_lo110")
 
 [node name="Campfire" parent="Camera3D/RayCast3D" instance=ExtResource("3_jlk7x")]

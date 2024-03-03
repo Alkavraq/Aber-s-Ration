@@ -35,11 +35,14 @@ var globalDelta
 @onready var camera: Camera3D = $Camera3D
 @onready var RealCampfire = preload("res://scenes/Inherited/CampFire.tscn")
 @onready var WeaponAnimationPlayer = $Camera3D/PitchFork/AnimationPlayer
-@onready var Weapon = $Camera3D/PitchFork
+@onready var WeaponLoc = $Camera3D/PitchFork
 @onready var Crosshair = $Crosshair/TextureRect
 @onready var WeaponThrowed = preload("res://scenes/Inherited/pitchForkThrow.tscn")
 
+static var Weapon
+
 func _ready() -> void:
+	Weapon=WeaponLoc
 	capture_mouse()
 
 func _process(delta: float) -> void:
@@ -53,7 +56,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		placeCampfire()
 	if Input.is_action_just_pressed("LMB") and !$Camera3D/RayCast3D/Campfire.visible and !WeaponAnimationPlayer.is_playing() and !weaponArmed:
 		WeaponAnimationPlayer.play("Hit")
-	if Input.is_action_pressed("RMB") and weaponArmed == false:
+	if Input.is_action_pressed("RMB") and weaponArmed == false and Weapon.visible:
 		showCrosshair(true)
 		WeaponAnimationPlayer.play("ReadyToFire")
 	if Input.is_action_just_released("RMB"):
@@ -74,12 +77,13 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func throwWeapon():
-	Weapon.visible = false
-	$Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area.monitoring = false
-	var thrownWeapon = WeaponThrowed.instantiate()
-	thrownWeapon.global_transform = Weapon.global_transform
-	get_parent().add_child(thrownWeapon)
-	thrownWeapon.throw()
+	if Weapon.visible == true:
+		Weapon.visible = false
+		$Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area.monitoring = false
+		var thrownWeapon = WeaponThrowed.instantiate()
+		thrownWeapon.global_transform = Weapon.global_transform
+		get_parent().add_child(thrownWeapon)
+		thrownWeapon.throw()
 
 func depricate(delta):
 	var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
