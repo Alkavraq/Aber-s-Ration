@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dsf5551jggy07"]
+[gd_scene load_steps=10 format=3 uid="uid://dsf5551jggy07"]
 
 [ext_resource type="Texture2D" uid="uid://bywtfeemdxujx" path="res://assets/PolygonPacks/PolyAdventureTexture_01.png" id="1_byey2"]
 [ext_resource type="Script" path="res://scenes/Inherited/pitchForkThrow.gd" id="1_n73ig"]
@@ -49,6 +49,8 @@ size = Vector3(0.373383, 2.07229, 0.201355)
 [sub_resource type="BoxShape3D" id="BoxShape3D_q8k4v"]
 size = Vector3(0.273, 2.01, 0.151)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_swv4f"]
+
 [node name="Root Scene" type="RigidBody3D"]
 collision_layer = 64
 mass = 5.0
@@ -78,5 +80,18 @@ transform = Transform3D(0.535, 0, 0, 0, 0.535, 0, 0, 0, 0.535, 0, 0.820471, -0.0
 visible = false
 billboard = 1
 texture = ExtResource("3_dx3wv")
+
+[node name="PinJoint3D" type="PinJoint3D" parent="."]
+node_a = NodePath("..")
+node_b = NodePath("../RigidBody3D")
+
+[node name="RigidBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6185, 0)
+mass = 2.0
+constant_force = Vector3(0, 15, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RigidBody3D"]
+shape = SubResource("SphereShape3D_swv4f")
+disabled = true
 
 [connection signal="body_entered" from="SM_Wep_Pitchfork_01/Area" to="." method="_on_area_body_entered"]

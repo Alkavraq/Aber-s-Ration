@@ -1,7 +1,7 @@
 extends RigidBody3D
 class_name ThrownSpear
 
-@export var throwForce = 20
+@export var throwForce = 30
 
 @onready var SpearKey = $SpearKey
 
@@ -12,7 +12,9 @@ static var hitground = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	#add_constant_force(Vector3(0, -5, 0), Vector3(0, -2, 0))
+	#apply_impulse(Vector3(0, -50, 0), Vector3(0, -2, 0))
+	pass
 
 func _physics_process(delta: float) -> void:
 	pass
@@ -23,12 +25,6 @@ func _process(delta: float) -> void:
 		self.visible = false
 		SpearKey.visible = false
 	#print(get_contact_count())
-	
-	#if previousYs:
-		#variation = (linear_velocity.y - previousYs) *10
-	#previousYs = linear_velocity.y
-	#if variation:
-		#rotation.z = variation
 	pass
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -51,8 +47,22 @@ func throw():
 	#var direction = _get_direction()
 	#transform = transform.looking_at(global_position + direction, Vector3.UP)
 	#linear_velocity = direction * throwForce
+
+func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
+	#angular_velocity.z = -0.5
+	#look_at(linear_velocity.normalized(), Vector3(0,-1,0))  
+	#self.rotation.z = self.linear_velocity.y
+	
+	#if previousYs:
+		#variation = (linear_velocity.y - previousYs) *10
+	#previousYs = linear_velocity.y
+	#if variation:
+		#rotation.z = variation
+	pass
+	
 	
 #func _get_direction():
+
 	#var viewport := get_viewport()
 	#var camera := viewport.get_camera_3d()
 	#var center:Vector2 = viewport.size/2
