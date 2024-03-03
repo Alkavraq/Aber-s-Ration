@@ -55,6 +55,9 @@ script = ExtResource("2_o8hsu")
 
 [node name="Crosshair" parent="." instance=ExtResource("6_j38p6")]
 
+[node name="Aim" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.286117, -6.70824)
+
 [connection signal="body_entered" from="Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area" to="." method="_on_area_body_entered"]
 [connection signal="animation_finished" from="Camera3D/PitchFork/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 

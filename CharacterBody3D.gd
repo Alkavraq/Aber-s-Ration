@@ -3,6 +3,7 @@ class_name Player extends CharacterBody3D
 @export_category("Player")
 @export_range(1, 35, 1) var speed: float = 10 # m/s
 @export_range(10, 400, 1) var acceleration: float = 100 # m/s^2
+@export var strenght := 5.0
 
 @export_range(0.1, 3.0, 0.1) var jump_height: float = 1 # m
 @export_range(0.1, 3.0, 0.1, "or_greater") var camera_sens: float = 1
@@ -29,15 +30,20 @@ static var foodDepricationSpeed = 0.3
 static var CurrentFood = 100
 static var heartRate = 80
 
+var globalDelta
+
 @onready var camera: Camera3D = $Camera3D
 @onready var RealCampfire = preload("res://scenes/Inherited/CampFire.tscn")
 @onready var WeaponAnimationPlayer = $Camera3D/PitchFork/AnimationPlayer
+@onready var Weapon = $Camera3D/PitchFork
 @onready var Crosshair = $Crosshair/TextureRect
+@onready var WeaponThrowed = preload("res://scenes/Inherited/pitchForkThrow.tscn")
 
 func _ready() -> void:
 	capture_mouse()
 
 func _process(delta: float) -> void:
+	globalDelta = delta
 	setPosition = global_position
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -68,7 +74,12 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func throwWeapon():
-	pass
+	Weapon.visible = false
+	$Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area.monitoring = false
+	var thrownWeapon = WeaponThrowed.instantiate()
+	thrownWeapon.global_transform = Weapon.global_transform
+	get_parent().add_child(thrownWeapon)
+	thrownWeapon.throw()
 
 func depricate(delta):
 	var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
