@@ -87,7 +87,7 @@ particles_anim_loop = false
 [sub_resource type="QuadMesh" id="QuadMesh_iee12"]
 material = SubResource("StandardMaterial3D_fmcx2")
 
-[node name="Root Scene" instance=ExtResource("1_3d531")]
+[node name="Root Scene" groups=["campfire"] instance=ExtResource("1_3d531")]
 
 [node name="RayCast3D" type="RayCast3D" parent="RootNode" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19565, 0.401478)

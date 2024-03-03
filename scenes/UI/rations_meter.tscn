@@ -62,7 +62,6 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_t8jif")
 max_value = 200.0
 value = 80.0
 fill_mode = 3
-show_percentage = false
 script = ExtResource("1_fohfv")
 
 [node name="Water" type="ProgressBar" parent="VBoxContainer/HBoxContainer"]
@@ -71,7 +70,6 @@ layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_3vm1i")
 value = 100.0
 fill_mode = 3
-show_percentage = false
 script = ExtResource("2_ahvje")
 
 [node name="Food" type="ProgressBar" parent="VBoxContainer/HBoxContainer"]
@@ -80,7 +78,6 @@ layout_mode = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_oumjr")
 value = 100.0
 fill_mode = 3
-show_percentage = false
 script = ExtResource("3_wwkhe")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]

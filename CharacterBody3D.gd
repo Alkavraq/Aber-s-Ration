@@ -22,8 +22,11 @@ var jump_vel: Vector3 # Jumping velocity
 
 var CampfirePlaced = false
 var weaponArmed = false
+var campfire 
+var distanceToCampfire = 0.0
 static var setPosition
 
+const defaultHR = 80
 static var waterDepricationSpeed = 0.5
 static var CurrentWater = 100
 static var foodDepricationSpeed = 0.3
@@ -46,6 +49,9 @@ func _ready() -> void:
 	capture_mouse()
 
 func _process(delta: float) -> void:
+	if campfire :
+		distanceToCampfire = self.global_position.distance_to(campfire.global_position)
+		print(distanceToCampfire)
 	globalDelta = delta
 	setPosition = global_position
 
@@ -86,6 +92,7 @@ func throwWeapon():
 		thrownWeapon.throw()
 
 func depricate(delta):
+	heartRate = defaultHR + (clamp((distanceToCampfire-15), 0, 200))/2.5
 	var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
 	if randi_range(1, 2) == 1:
 		CurrentFood = CurrentFood - (foodDepricationSpeed + extraDepricationFromHeartRate) * delta
@@ -108,6 +115,7 @@ func placeCampfire():
 		newCampfire.global_position = $Camera3D/RayCast3D/Campfire.global_position
 		$Camera3D/RayCast3D/Campfire.visible = false
 		get_parent().add_child(newCampfire)
+		campfire = newCampfire
 
 func capture_mouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
