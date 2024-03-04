@@ -24,6 +24,8 @@ var CampfirePlaced = false
 var weaponArmed = false
 var campfire 
 var distanceToCampfire = 0.0
+var monstresDansLance = []
+var killing = false
 static var setPosition
 
 static var seenByMonstersCount = 0
@@ -43,7 +45,7 @@ var globalDelta
 @onready var WeaponLoc = $Camera3D/PitchFork
 @onready var Crosshair = $Crosshair/TextureRect
 @onready var WeaponThrowed = preload("res://scenes/Inherited/pitchForkThrow.tscn")
-@onready var playerMonsterScatter = $ProtonScatter
+#@onready var playerMonsterScatter = $ProtonScatter
 @onready var MonsterScene = preload("res://scenes/monster.tscn")
 
 static var Weapon
@@ -56,7 +58,7 @@ func _process(delta: float) -> void:
 	#print(seenByMonstersCount)
 	if campfire :
 		distanceToCampfire = self.global_position.distance_to(campfire.global_position)
-		print(distanceToCampfire)
+		#print(distanceToCampfire)
 	globalDelta = delta
 	setPosition = global_position
 
@@ -67,6 +69,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		placeCampfire()
 	if Input.is_action_just_pressed("LMB") and !$Camera3D/RayCast3D/Campfire.visible and !WeaponAnimationPlayer.is_playing() and !weaponArmed:
 		WeaponAnimationPlayer.play("Hit")
+		killing = true
 	if Input.is_action_pressed("RMB") and weaponArmed == false and Weapon.visible:
 		showCrosshair(true)
 		WeaponAnimationPlayer.play("ReadyToFire")
@@ -82,6 +85,22 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("jump"): jumping = true
 
 func _physics_process(delta: float) -> void:
+	#print(monstresDansLance)
+	if WeaponAnimationPlayer.current_animation == "Hit" and killing:
+		#print("killim")
+		for body in monstresDansLance:
+			for x in body.get_children():
+				if x.is_in_group("animator"):
+					Player.seenByMonstersCount -= 1
+					var hrTween = create_tween()
+					hrTween.tween_property(Player, "HRfromLooks", 10*Player.seenByMonstersCount, 5)
+					x.play("Dead")
+					x.get_parent().stopLook()
+					break
+					#await get_tree().create_timer(1).timeout
+					#body.queue_free()
+		killing = false
+					
 	#if mouse_captured: _handle_joypad_camera_rotation(delta)
 	spawnMonsters()
 	depricate(delta)
@@ -91,21 +110,51 @@ func _physics_process(delta: float) -> void:
 func spawnMonsters():
 	if CampfirePlaced:
 		if randi_range(1,100) == 1:
-			if playerMonsterScatter.modifier_stack.stack[0].instance_count == 0 :
-				playerMonsterScatter.modifier_stack.stack[0].instance_count += 1
-			#await get_tree().create_timer(1).timeout
-			if $ProtonScatter/ScatterOutput.has_node("ScatterItem"):
-				var NewMonsters = $ProtonScatter/ScatterOutput/ScatterItem.get_children()
-				var NewMonsterPos
-				for x in NewMonsters:
-					if x.is_in_group("monster"):
-						NewMonsterPos = x.global_position
-				if NewMonsterPos:
-					var nouveauMonstre = MonsterScene.instantiate()
-					nouveauMonstre.global_position = NewMonsterPos
-					get_parent().add_child(nouveauMonstre)
-					playerMonsterScatter.modifier_stack.stack[0].instance_count = 0
-					playerMonsterScatter.rotate_y(deg_to_rad(randi_range(1, 360)))
+			$MonsterSpawnAxis.rotate_y(deg_to_rad(randi_range(1, 360)))
+			var nouveauMonstre = MonsterScene.instantiate()
+			var groundFinderRay
+			var topFinderRay
+			nouveauMonstre.global_position = $MonsterSpawnAxis/MonsterSpawnPoint.global_position
+			get_parent().add_child(nouveauMonstre)
+			groundFinderRay = nouveauMonstre.get_node("GroundFinder")
+			topFinderRay = nouveauMonstre.get_node("TopFinder")
+			#for x in nouveauMonstre.get_children():
+				#if x.name == "GroundFinder":
+					#groundFinderRay = x
+				#if x.name == "TopFinder":
+					#topFinderRay = x
+			if groundFinderRay and topFinderRay:
+				print("Bonjour")
+				if groundFinderRay.is_colliding() and !topFinderRay.is_colliding():
+					print("1")
+					nouveauMonstre.global_position.y = groundFinderRay.get_collision_point()
+				elif topFinderRay.is_colliding() and !groundFinderRay.is_colliding():
+					print("2")
+					nouveauMonstre.global_position.y = topFinderRay.get_collision_point()
+				elif !groundFinderRay.is_colliding() and !topFinderRay.is_colliding():
+					print("3")
+					#nouveauMonstre.global_position.y += 1
+					pass
+			#if playerMonsterScatter.modifier_stack.stack[0].instance_count == 0 :
+				#playerMonsterScatter.modifier_stack.stack[0].instance_count += 1
+				#print("one moreeeeeeeeeeeeeee")
+			##await get_tree().create_timer(1).timeout
+			#if $ProtonScatter/ScatterOutput.has_node("ScatterItem"):
+			##if $ProtonScatter/ScatterOutput.get_child(0):
+				#print("one moreeaaaaaaaaaaaaaa")
+				#var NewMonsters = $ProtonScatter/ScatterOutput/ScatterItem.get_children()
+				#var NewMonsterPos
+				#for x in NewMonsters:
+					#if x.is_in_group("monster"):
+						#NewMonsterPos = x.global_position
+						##if NewMonsterPos.x >= 0 and NewMonsterPos.x <= 300 and NewMonsterPos.z >= -150 and NewMonsterPos.z <= 150:
+						#print("one more")
+						#var nouveauMonstre = MonsterScene.instantiate()
+						#nouveauMonstre.global_position = NewMonsterPos
+						#get_parent().add_child(nouveauMonstre)
+						#playerMonsterScatter.modifier_stack.stack[0].instance_count = 0
+						#playerMonsterScatter.rotate_y(deg_to_rad(randi_range(1, 360)))
+						#break
 
 func throwWeapon():
 	if Weapon.visible == true:
@@ -117,7 +166,7 @@ func throwWeapon():
 		thrownWeapon.throw()
 
 func depricate(delta):
-	print(HRfromLooks)
+	#print(HRfromLooks)
 	heartRate = defaultHR + ((clamp((distanceToCampfire-15), 0, 200))/2.5) + HRfromLooks
 	var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
 	if randi_range(1, 2) == 1:
@@ -142,6 +191,7 @@ func placeCampfire():
 		$Camera3D/RayCast3D/Campfire.visible = false
 		get_parent().add_child(newCampfire)
 		campfire = newCampfire
+		#playerMonsterScatter.rotate_y(deg_to_rad(randi_range(1, 360)))
 
 func capture_mouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -188,17 +238,23 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "ReadyToFire" and Input.is_action_pressed("RMB"):
 		print(anim_name)
 		weaponArmed = true
+	if anim_name == "Hit":
+		killing = false
 
 func _on_area_body_entered(body: Node3D) -> void:
-	if body.is_in_group("monster") and WeaponAnimationPlayer.current_animation == "Hit":
+	if WeaponAnimationPlayer.current_animation == "Hit" and body.is_in_group("monster"):
 		print("killim")
-		for x in body.get_parent().get_parent().get_children():
+		for x in body.get_children():
 			if x.is_in_group("animator"):
 				Player.seenByMonstersCount -= 1
 				var hrTween = create_tween()
 				hrTween.tween_property(Player, "HRfromLooks", 10*Player.seenByMonstersCount, 5)
 				x.play("Dead")
 				x.get_parent().stopLook()
-				await get_tree().create_timer(1).timeout
-				body.get_parent().get_parent().queue_free()
+				break
+	if body.is_in_group("monster"):
+		monstresDansLance.append(body)
 		
+func _on_area_body_exited(body: Node3D) -> void:
+	if body.is_in_group("monster"):
+		monstresDansLance.erase(body)

@@ -87,15 +87,15 @@ func _on_area_body_entered(body: Node3D) -> void:
 		hitground = false
 		
 		print("killim")
-		for x in body.get_parent().get_parent().get_children():
+		for x in body.get_children():
 			if x.is_in_group("animator"):
 				Player.seenByMonstersCount -= 1
 				var hrTween = create_tween()
 				hrTween.tween_property(Player, "HRfromLooks", 10*Player.seenByMonstersCount, 5)
 				x.play("Dead")
 				x.get_parent().stopLook()
-				await get_tree().create_timer(1).timeout
-				body.get_parent().get_parent().queue_free()
+				#await get_tree().create_timer(1).timeout
+				#body.queue_free()
 	if body.name == "Terrain3D" or body.get_parent().name == "Road":
 		hitground = true
 		
