@@ -108,7 +108,7 @@ _data = {
 "RESET": SubResource("Animation_d467x")
 }
 
-[node name="Monster" type="Node3D"]
+[node name="Monster" type="Node3D" groups=["monster"]]
 script = ExtResource("1_vfn1i")
 
 [node name="Body" type="MeshInstance3D" parent="."]

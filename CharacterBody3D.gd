@@ -43,6 +43,8 @@ var globalDelta
 @onready var WeaponLoc = $Camera3D/PitchFork
 @onready var Crosshair = $Crosshair/TextureRect
 @onready var WeaponThrowed = preload("res://scenes/Inherited/pitchForkThrow.tscn")
+@onready var playerMonsterScatter = $ProtonScatter
+@onready var MonsterScene = preload("res://scenes/monster.tscn")
 
 static var Weapon
 
@@ -81,9 +83,29 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _physics_process(delta: float) -> void:
 	#if mouse_captured: _handle_joypad_camera_rotation(delta)
+	spawnMonsters()
 	depricate(delta)
 	velocity = _walk(delta) + _gravity(delta) + _jump(delta)
 	move_and_slide()
+
+func spawnMonsters():
+	if CampfirePlaced:
+		if randi_range(1,100) == 1:
+			if playerMonsterScatter.modifier_stack.stack[0].instance_count == 0 :
+				playerMonsterScatter.modifier_stack.stack[0].instance_count += 1
+			#await get_tree().create_timer(1).timeout
+			if $ProtonScatter/ScatterOutput.has_node("ScatterItem"):
+				var NewMonsters = $ProtonScatter/ScatterOutput/ScatterItem.get_children()
+				var NewMonsterPos
+				for x in NewMonsters:
+					if x.is_in_group("monster"):
+						NewMonsterPos = x.global_position
+				if NewMonsterPos:
+					var nouveauMonstre = MonsterScene.instantiate()
+					nouveauMonstre.global_position = NewMonsterPos
+					get_parent().add_child(nouveauMonstre)
+					playerMonsterScatter.modifier_stack.stack[0].instance_count = 0
+					playerMonsterScatter.rotate_y(deg_to_rad(randi_range(1, 360)))
 
 func throwWeapon():
 	if Weapon.visible == true:

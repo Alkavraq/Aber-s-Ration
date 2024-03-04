@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cdebw5krdiphp"]
+[gd_scene load_steps=23 format=3 uid="uid://cdebw5krdiphp"]
 
 [ext_resource type="Script" path="res://CharacterBody3D.gd" id="1_3paqm"]
 [ext_resource type="Script" path="res://scenes/campFireCast.gd" id="2_lo110"]
@@ -6,8 +6,73 @@
 [ext_resource type="PackedScene" uid="uid://dfrfg7xbrn4hj" path="res://scenes/Inherited/CampFire.tscn" id="3_jlk7x"]
 [ext_resource type="PackedScene" uid="uid://rbqa3g2ceei6" path="res://scenes/Inherited/pitchFork.tscn" id="4_e0lpl"]
 [ext_resource type="PackedScene" uid="uid://3qv8dqft1gjr" path="res://scenes/UI/crosshair.tscn" id="6_j38p6"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter.gd" id="7_gfiks"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="8_rnvls"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/create_inside_random.gd" id="9_djlko"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/randomize_transforms.gd" id="10_66nmm"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/relax.gd" id="11_r8cut"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/project_on_geometry.gd" id="12_uteij"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_item.gd" id="13_368r6"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/scatter_shape.gd" id="14_epc84"]
+[ext_resource type="Script" path="res://addons/proton_scatter/src/shapes/sphere_shape.gd" id="15_7jk5r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_nosu5"]
+
+[sub_resource type="Resource" id="Resource_de7gg"]
+script = ExtResource("9_djlko")
+amount = 75
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = true
+reference_frame = 1
+
+[sub_resource type="Resource" id="Resource_bkgwu"]
+script = ExtResource("10_66nmm")
+position = Vector3(0.15, 0.15, 0.15)
+rotation = Vector3(20, 360, 20)
+scale = Vector3(0.1, 0.1, 0.1)
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 2
+
+[sub_resource type="Resource" id="Resource_qialy"]
+script = ExtResource("11_r8cut")
+iterations = 3
+offset_step = 0.2
+consecutive_step_multiplier = 0.75
+use_computeshader = true
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = true
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_wtd15"]
+script = ExtResource("12_uteij")
+ray_direction = Vector3(0, -1, 0)
+ray_length = 5.0
+ray_offset = 5.0
+remove_points_on_miss = false
+align_with_collision_normal = false
+max_slope = 90.0
+collision_mask = 1
+exclude_mask = 0
+enabled = true
+override_global_seed = false
+custom_seed = 0
+restrict_height = false
+reference_frame = 0
+
+[sub_resource type="Resource" id="Resource_hrwrt"]
+script = ExtResource("8_rnvls")
+stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_de7gg"), SubResource("Resource_bkgwu"), SubResource("Resource_qialy"), SubResource("Resource_wtd15")])
+
+[sub_resource type="Resource" id="Resource_g8bsm"]
+script = ExtResource("15_7jk5r")
+radius = 20.0
 
 [node name="CharacterBody3D" type="CharacterBody3D" groups=["player"]]
 transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
@@ -59,6 +124,21 @@ script = ExtResource("2_o8hsu")
 
 [node name="Aim" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.286117, -6.70824)
+
+[node name="ProtonScatter" type="Node3D" parent="."]
+script = ExtResource("7_gfiks")
+modifier_stack = SubResource("Resource_hrwrt")
+Performance/use_chunks = true
+Performance/chunk_dimensions = Vector3(15, 15, 15)
+
+[node name="ScatterItem" type="Node3D" parent="ProtonScatter"]
+script = ExtResource("13_368r6")
+path = "res://addons/proton_scatter/demos/assets/brick.tscn"
+
+[node name="ScatterShape" type="Node3D" parent="ProtonScatter"]
+transform = Transform3D(1, 0, -2.98023e-08, 0, 1, 0, 2.98023e-08, 0, 1, 0, 0, 0)
+script = ExtResource("14_epc84")
+shape = SubResource("Resource_g8bsm")
 
 [connection signal="body_entered" from="Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area" to="." method="_on_area_body_entered"]
 [connection signal="animation_finished" from="Camera3D/PitchFork/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

@@ -1,7 +1,7 @@
 extends RigidBody3D
 class_name ThrownSpear
 
-@export var throwForce = 30
+@export var throwForce = 20
 
 @onready var SpearKey = $SpearKey
 
