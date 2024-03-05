@@ -35,6 +35,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		hitground = false
 		$CollisionShape.disabled = true
 		rayon.shown = false
+		Player.startMonitor = true
 		await get_tree().create_timer(2).timeout
 		queue_free()
 
@@ -89,7 +90,7 @@ func _on_area_body_entered(body: Node3D) -> void:
 		Player.Weapon.visible = true
 		self.visible = false
 		hitground = false
-		
+		Player.startMonitor = true
 		
 		print("killim")
 		for x in body.get_children():

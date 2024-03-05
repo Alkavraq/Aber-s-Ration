@@ -27,6 +27,7 @@ var distanceToCampfire = 0.0
 var monstresDansLance = []
 var killing = false
 static var setPosition
+static var startMonitor = false
 
 static var seenByMonstersCount = 0
 const defaultHR = 80
@@ -47,6 +48,7 @@ var globalDelta
 @onready var WeaponThrowed = preload("res://scenes/Inherited/pitchForkThrow.tscn")
 #@onready var playerMonsterScatter = $ProtonScatter
 @onready var MonsterScene = preload("res://scenes/monster.tscn")
+@onready var HitArea = $Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area
 
 static var Weapon
 
@@ -55,6 +57,9 @@ func _ready() -> void:
 	capture_mouse()
 
 func _process(delta: float) -> void:
+	if startMonitor:
+		$Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area.monitoring = true
+		startMonitor = false
 	#print(seenByMonstersCount)
 	if campfire :
 		distanceToCampfire = self.global_position.distance_to(campfire.global_position)
