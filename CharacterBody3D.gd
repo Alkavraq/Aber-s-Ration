@@ -113,28 +113,25 @@ func spawnMonsters():
 			$MonsterSpawnAxis.rotate_y(deg_to_rad(randi_range(1, 360)))
 			var nouveauMonstre = MonsterScene.instantiate()
 			var groundFinderRay
-			var topFinderRay
-			nouveauMonstre.global_position = $MonsterSpawnAxis/MonsterSpawnPoint.global_position
+			nouveauMonstre.global_position = Vector3($MonsterSpawnAxis/MonsterSpawnPoint.global_position.x, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.y + 10, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z) 
 			get_parent().add_child(nouveauMonstre)
 			groundFinderRay = nouveauMonstre.get_node("GroundFinder")
-			topFinderRay = nouveauMonstre.get_node("TopFinder")
 			#for x in nouveauMonstre.get_children():
 				#if x.name == "GroundFinder":
 					#groundFinderRay = x
 				#if x.name == "TopFinder":
 					#topFinderRay = x
-			if groundFinderRay and topFinderRay:
-				print("Bonjour")
-				if groundFinderRay.is_colliding() and !topFinderRay.is_colliding():
-					print("1")
-					nouveauMonstre.global_position.y = groundFinderRay.get_collision_point()
-				elif topFinderRay.is_colliding() and !groundFinderRay.is_colliding():
-					print("2")
-					nouveauMonstre.global_position.y = topFinderRay.get_collision_point()
-				elif !groundFinderRay.is_colliding() and !topFinderRay.is_colliding():
-					print("3")
+			await get_tree().create_timer(0.02).timeout
+			if groundFinderRay:
+				#print("Bonjour")
+				if groundFinderRay.is_colliding():
+					#print("1")
+					nouveauMonstre.global_position.y = groundFinderRay.get_collision_point().y + 0.8
+				elif !groundFinderRay.is_colliding():
+					nouveauMonstre.queue_free()
+					#print("3")
 					#nouveauMonstre.global_position.y += 1
-					pass
+					
 			#if playerMonsterScatter.modifier_stack.stack[0].instance_count == 0 :
 				#playerMonsterScatter.modifier_stack.stack[0].instance_count += 1
 				#print("one moreeeeeeeeeeeeeee")

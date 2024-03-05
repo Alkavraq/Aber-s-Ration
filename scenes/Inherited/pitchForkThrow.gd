@@ -33,6 +33,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		Player.Weapon.visible = true
 		self.visible = false
 		hitground = false
+		$CollisionShape.disabled = true
+		rayon.shown = false
+		await get_tree().create_timer(2).timeout
+		queue_free()
 
 func showKey(value):
 	if hitground:
@@ -79,12 +83,13 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 
 func _on_area_body_entered(body: Node3D) -> void:
 	#print(body)
-	if body.is_in_group("monster") and !hitground:
+	if body.is_in_group("monster"):
 		
 		SpearKey.visible = false
 		Player.Weapon.visible = true
 		self.visible = false
 		hitground = false
+		
 		
 		print("killim")
 		for x in body.get_children():
@@ -96,6 +101,8 @@ func _on_area_body_entered(body: Node3D) -> void:
 				x.get_parent().stopLook()
 				#await get_tree().create_timer(1).timeout
 				#body.queue_free()
-	if body.name == "Terrain3D" or body.get_parent().name == "Road":
+				
+	if body.name == "Terrain3D" or body.get_parent().name == "Road" and self.visible:
+		await get_tree().create_timer(1).timeout
 		hitground = true
 		
