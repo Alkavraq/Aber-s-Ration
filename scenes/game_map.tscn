@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://d3lxyhsplxxpd"]
+[gd_scene load_steps=35 format=3 uid="uid://d3lxyhsplxxpd"]
 
 [ext_resource type="PackedScene" uid="uid://cl2xqcq37xewh" path="res://scenes/map.tscn" id="1_uh3fg"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/stack/modifier_stack.gd" id="2_0b78q"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/offset_position.gd" id="7_lf4c4"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/create_along_edge_continuous.gd" id="8_e4ben"]
 [ext_resource type="Script" path="res://addons/proton_scatter/src/modifiers/offset_rotation.gd" id="9_ls4xv"]
+[ext_resource type="PackedScene" uid="uid://cpqwmcpsq3" path="res://scenes/Inherited/DoubleFence.tscn" id="14_7kf4k"]
 
 [sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_618mf"]
 
@@ -28,7 +29,7 @@ glow_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_albedo = Color(0.333333, 0.333333, 0.333333, 1)
 
-[sub_resource type="Resource" id="Resource_w0wxl"]
+[sub_resource type="Resource" id="Resource_n5v2c"]
 script = ExtResource("3_1prt4")
 amount = 1600
 enabled = true
@@ -37,7 +38,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_dg0q6"]
+[sub_resource type="Resource" id="Resource_ngyrx"]
 script = ExtResource("4_f4px5")
 position = Vector3(0.15, 0.15, 0.15)
 rotation = Vector3(20, 360, 20)
@@ -48,7 +49,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_8f62u"]
+[sub_resource type="Resource" id="Resource_ui7cf"]
 script = ExtResource("5_bypai")
 iterations = 3
 offset_step = 0.2
@@ -60,7 +61,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_83g4b"]
+[sub_resource type="Resource" id="Resource_td1my"]
 script = ExtResource("6_6xaj2")
 terrain_node = NodePath("../Terrain3D")
 align_with_collision_normal = true
@@ -70,7 +71,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_jj1hl"]
+[sub_resource type="Resource" id="Resource_hv41l"]
 script = ExtResource("7_lf4c4")
 operation = 0
 position = Vector3(0, -0.2, 0)
@@ -80,11 +81,11 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_n3kg2"]
+[sub_resource type="Resource" id="Resource_1ivxh"]
 script = ExtResource("2_0b78q")
-stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_w0wxl"), SubResource("Resource_dg0q6"), SubResource("Resource_8f62u"), SubResource("Resource_83g4b"), SubResource("Resource_jj1hl")])
+stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_n5v2c"), SubResource("Resource_ngyrx"), SubResource("Resource_ui7cf"), SubResource("Resource_td1my"), SubResource("Resource_hv41l")])
 
-[sub_resource type="Resource" id="Resource_bejof"]
+[sub_resource type="Resource" id="Resource_anwa0"]
 script = ExtResource("8_e4ben")
 item_length = 3.53
 ignore_slopes = false
@@ -94,7 +95,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_wtpn2"]
+[sub_resource type="Resource" id="Resource_15xfe"]
 script = ExtResource("4_f4px5")
 position = Vector3(0.001, 0.001, 0.001)
 rotation = Vector3(0.001, 0.001, 0.001)
@@ -105,7 +106,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_ajqm5"]
+[sub_resource type="Resource" id="Resource_mkrau"]
 script = ExtResource("9_ls4xv")
 operation = 0
 rotation = Vector3(0, 0, 0)
@@ -115,7 +116,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_hnxel"]
+[sub_resource type="Resource" id="Resource_8sgnc"]
 script = ExtResource("6_6xaj2")
 terrain_node = NodePath("../Terrain3D")
 align_with_collision_normal = false
@@ -125,9 +126,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_rdm7j"]
+[sub_resource type="Resource" id="Resource_05o5u"]
 script = ExtResource("2_0b78q")
-stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_bejof"), SubResource("Resource_wtpn2"), SubResource("Resource_ajqm5"), SubResource("Resource_hnxel")])
+stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_anwa0"), SubResource("Resource_15xfe"), SubResource("Resource_mkrau"), SubResource("Resource_8sgnc")])
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_suu4y"]
 size = Vector3(0.841309, 13.4396, 143.872)
@@ -152,10 +153,10 @@ environment = SubResource("Environment_nkkgk")
 [node name="Map" parent="." instance=ExtResource("1_uh3fg")]
 
 [node name="ProtonScatterTrees" parent="Map" index="3"]
-modifier_stack = SubResource("Resource_n3kg2")
+modifier_stack = SubResource("Resource_1ivxh")
 
 [node name="ProtonScatterFences" parent="Map" index="4"]
-modifier_stack = SubResource("Resource_rdm7j")
+modifier_stack = SubResource("Resource_05o5u")
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("2_3f78r")]
 transform = Transform3D(0.402187, 0, -0.915557, 0, 1, 0, 0.915557, 0, 0.402187, -7.31347, 1.49205, 0)
@@ -204,6 +205,9 @@ shape = SubResource("BoxShape3D_svrhm")
 [node name="CollisionShape3D8" type="CollisionShape3D" parent="Boundaries/StaticBody3D"]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -15.7464, 4.67572, -0.0405273)
 shape = SubResource("BoxShape3D_y368k")
+
+[node name="Extra Fence" parent="Boundaries" instance=ExtResource("14_7kf4k")]
+transform = Transform3D(-0.0767364, 0, -0.997051, 0, 1, 0, 0.997051, 0, -0.0767364, 298.672, 1.66603, -149.842)
 
 [node name="Monster" parent="." instance=ExtResource("6_28ld7")]
 transform = Transform3D(-4.37114e-08, -1, 0, -4.37114e-08, 1.91069e-15, -1, 1, -4.37114e-08, -4.37114e-08, 0, 0.979896, 0)

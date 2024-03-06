@@ -107,33 +107,44 @@ func _physics_process(delta: float) -> void:
 		killing = false
 					
 	#if mouse_captured: _handle_joypad_camera_rotation(delta)
+	if CampfirePlaced:
+		if sleepiness() == 0.0:
+			Dialogic.start("res://resources/dialogic/deathTimeline.dtl")
+			get_viewport().set_input_as_handled()
 	spawnMonsters()
 	depricate(delta)
 	velocity = _walk(delta) + _gravity(delta) + _jump(delta)
 	move_and_slide()
 
+func sleepiness():
+	if randi_range(1, 50) == 1:
+		camera.attributes.exposure_multiplier -= randf_range(0.01, 0.05)
+	camera.attributes.exposure_multiplier = clamp(camera.attributes.exposure_multiplier, 0, 2)
+	return camera.attributes.exposure_multiplier
+
 func spawnMonsters():
 	if CampfirePlaced:
 		if randi_range(1,100) == 1:
 			$MonsterSpawnAxis.rotate_y(deg_to_rad(randi_range(1, 360)))
-			var nouveauMonstre = MonsterScene.instantiate()
-			var groundFinderRay
-			nouveauMonstre.global_position = Vector3($MonsterSpawnAxis/MonsterSpawnPoint.global_position.x, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.y + 10, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z) 
-			get_parent().add_child(nouveauMonstre)
-			groundFinderRay = nouveauMonstre.get_node("GroundFinder")
-			#for x in nouveauMonstre.get_children():
-				#if x.name == "GroundFinder":
-					#groundFinderRay = x
-				#if x.name == "TopFinder":
-					#topFinderRay = x
-			await get_tree().create_timer(0.02).timeout
-			if groundFinderRay:
-				#print("Bonjour")
-				if groundFinderRay.is_colliding():
-					#print("1")
-					nouveauMonstre.global_position.y = groundFinderRay.get_collision_point().y + 0.8
-				elif !groundFinderRay.is_colliding():
-					nouveauMonstre.queue_free()
+			if $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x > 1 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x < 300 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z > -150 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z < 150: 
+				var nouveauMonstre = MonsterScene.instantiate()
+				var groundFinderRay
+				nouveauMonstre.global_position = Vector3($MonsterSpawnAxis/MonsterSpawnPoint.global_position.x, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.y + 10, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z) 
+				get_parent().add_child(nouveauMonstre)
+				groundFinderRay = nouveauMonstre.get_node("GroundFinder")
+				#for x in nouveauMonstre.get_children():
+					#if x.name == "GroundFinder":
+						#groundFinderRay = x
+					#if x.name == "TopFinder":
+						#topFinderRay = x
+				await get_tree().create_timer(0.02).timeout
+				if groundFinderRay:
+					#print("Bonjour")
+					if groundFinderRay.is_colliding():
+						#print("1")
+						nouveauMonstre.global_position.y = groundFinderRay.get_collision_point().y + 0.8
+					elif !groundFinderRay.is_colliding():
+						nouveauMonstre.queue_free()
 					#print("3")
 					#nouveauMonstre.global_position.y += 1
 					
