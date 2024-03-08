@@ -67,7 +67,17 @@ func _process(delta: float) -> void:
 		startMonitor = false
 	#print(seenByMonstersCount)
 	if campfire :
+		var campArrow = $CampfireArrow
 		distanceToCampfire = self.global_position.distance_to(campfire.global_position)
+		#if distanceToCampfire >= 10:
+		if distanceToCampfire >= 1:
+			campArrow.visible = true
+			if self.global_position.z-campfire.global_position.z >= 0:
+				campArrow.rotation.y = (atan((self.global_position.x-campfire.global_position.x)/(self.global_position.z-campfire.global_position.z))) -90
+			else : 
+				campArrow.rotation.y = (atan((self.global_position.x-campfire.global_position.x)/(self.global_position.z-campfire.global_position.z))) +45
+		else :
+			campArrow.visible = false
 		#print(distanceToCampfire)
 	globalDelta = delta
 	setPosition = global_position
@@ -114,12 +124,13 @@ func _physics_process(delta: float) -> void:
 	#if mouse_captured: _handle_joypad_camera_rotation(delta)
 	if CampfirePlaced:
 		#camera.attributes.exposure_multiplier = 0.0
-		if sleepiness() <= 0.05 and Dialogic.current_timeline == null and wakeUpGraceTimer.is_stopped():
-			sleeping = true
-			camera.attributes.exposure_multiplier = 0.0
-			campfire.get_node("GPUParticles3D").visible = false
-			Dialogic.start("deathTimeline")
-			release_mouse()
+		if wakeUpGraceTimer.is_stopped():
+			if sleepiness() <= 0.05 and Dialogic.current_timeline == null:
+				sleeping = true
+				camera.attributes.exposure_multiplier = 0.0
+				campfire.get_node("GPUParticles3D").visible = false
+				Dialogic.start("deathTimeline")
+				release_mouse()
 	spawnMonsters()
 	depricate(delta)
 	velocity = _walk(delta) + _gravity(delta) + _jump(delta)
