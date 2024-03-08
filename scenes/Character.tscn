@@ -81,7 +81,8 @@ target_position = Vector3(0, -40, 0)
 [node name="CampfireArrow" type="Node3D" parent="."]
 
 [node name="Sprite3D" type="Sprite3D" parent="CampfireArrow"]
-transform = Transform3D(-4.37114e-08, 1, 4.37114e-08, 0, -4.37114e-08, 1, 1, 4.37114e-08, 1.91069e-15, 0, -0.567686, 1.478)
+transform = Transform3D(-3.27835e-08, 0.75, 3.27835e-08, 0, -3.27835e-08, 0.75, 0.75, 3.27835e-08, 1.43301e-15, 0, -0.567686, 1.13783)
+modulate = Color(1, 1, 1, 0.188235)
 texture = ExtResource("7_6ih56")
 
 [connection signal="body_entered" from="Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area" to="." method="_on_area_body_entered"]

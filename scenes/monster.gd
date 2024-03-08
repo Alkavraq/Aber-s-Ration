@@ -11,7 +11,7 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	if playerFinder.is_colliding():
+	if playerFinder.is_colliding() and look:
 		if playerFinder.get_collider().is_in_group("player") and !counted:
 			Player.seenByMonstersCount += 1
 			var hrTween = create_tween()

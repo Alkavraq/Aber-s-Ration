@@ -69,8 +69,8 @@ func _process(delta: float) -> void:
 	if campfire :
 		var campArrow = $CampfireArrow
 		distanceToCampfire = self.global_position.distance_to(campfire.global_position)
-		#if distanceToCampfire >= 10:
-		if distanceToCampfire >= 1:
+		if distanceToCampfire >= 10 and !sleeping:
+		#if distanceToCampfire >= 1:
 			campArrow.visible = true
 			if self.global_position.z-campfire.global_position.z >= 0:
 				campArrow.rotation.y = (atan((self.global_position.x-campfire.global_position.x)/(self.global_position.z-campfire.global_position.z))) -90
@@ -111,7 +111,8 @@ func _physics_process(delta: float) -> void:
 		for body in monstresDansLance:
 			for x in body.get_children():
 				if x.is_in_group("animator"):
-					Player.seenByMonstersCount -= 1
+					if body.counted == true:
+						Player.seenByMonstersCount -= 1
 					var hrTween = create_tween()
 					hrTween.tween_property(Player, "HRfromLooks", 10*Player.seenByMonstersCount, 5)
 					x.play("Dead")
@@ -138,13 +139,13 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 
 func sleepiness():
-	if randi_range(1, 50) == 1:
+	if randi_range(1, 75) == 1:
 		camera.attributes.exposure_multiplier -= randf_range(0.01, 0.05)
 	camera.attributes.exposure_multiplier = clamp(camera.attributes.exposure_multiplier, 0, 2)
 	return camera.attributes.exposure_multiplier
 
 func FwakeUP():
-	wakeUpGraceTimer.start(20)
+	wakeUpGraceTimer.start(30)
 	sleeping = false
 	wakeUP = false
 	capture_mouse()
@@ -160,7 +161,7 @@ func FwakeUP():
 
 func spawnMonsters():
 	if CampfirePlaced:
-		if randi_range(1,100) == 1:
+		if randi_range(1,300) == 1:
 			$MonsterSpawnAxis.rotate_y(deg_to_rad(randi_range(1, 360)))
 			if $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x > 1 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x < 300 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z > -150 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z < 150: 
 				var nouveauMonstre = MonsterScene.instantiate()
@@ -295,7 +296,8 @@ func _on_area_body_entered(body: Node3D) -> void:
 		print("killim")
 		for x in body.get_children():
 			if x.is_in_group("animator"):
-				Player.seenByMonstersCount -= 1
+				if body.counted == true:
+					Player.seenByMonstersCount -= 1
 				var hrTween = create_tween()
 				hrTween.tween_property(Player, "HRfromLooks", 10*Player.seenByMonstersCount, 5)
 				x.play("Dead")
