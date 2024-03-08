@@ -28,6 +28,8 @@ var monstresDansLance = []
 var killing = false
 static var setPosition
 static var startMonitor = false
+static var wakeUP = false
+static var sleeping = false
 
 static var seenByMonstersCount = 0
 const defaultHR = 80
@@ -49,6 +51,7 @@ var globalDelta
 #@onready var playerMonsterScatter = $ProtonScatter
 @onready var MonsterScene = preload("res://scenes/monster.tscn")
 @onready var HitArea = $Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area
+@onready var wakeUpGraceTimer = $WakeUpGrace
 
 static var Weapon
 
@@ -57,6 +60,8 @@ func _ready() -> void:
 	capture_mouse()
 
 func _process(delta: float) -> void:
+	if wakeUP:
+		FwakeUP()
 	if startMonitor:
 		$Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area.monitoring = true
 		startMonitor = false
@@ -108,19 +113,39 @@ func _physics_process(delta: float) -> void:
 					
 	#if mouse_captured: _handle_joypad_camera_rotation(delta)
 	if CampfirePlaced:
-		if sleepiness() == 0.0:
-			Dialogic.start("res://resources/dialogic/deathTimeline.dtl")
-			get_viewport().set_input_as_handled()
+		#camera.attributes.exposure_multiplier = 0.0
+		if sleepiness() <= 0.05 and Dialogic.current_timeline == null and wakeUpGraceTimer.is_stopped():
+			sleeping = true
+			camera.attributes.exposure_multiplier = 0.0
+			campfire.get_node("GPUParticles3D").visible = false
+			Dialogic.start("deathTimeline")
+			release_mouse()
 	spawnMonsters()
 	depricate(delta)
 	velocity = _walk(delta) + _gravity(delta) + _jump(delta)
-	move_and_slide()
+	if !sleeping:
+		move_and_slide()
 
 func sleepiness():
 	if randi_range(1, 50) == 1:
 		camera.attributes.exposure_multiplier -= randf_range(0.01, 0.05)
 	camera.attributes.exposure_multiplier = clamp(camera.attributes.exposure_multiplier, 0, 2)
 	return camera.attributes.exposure_multiplier
+
+func FwakeUP():
+	wakeUpGraceTimer.start(20)
+	sleeping = false
+	wakeUP = false
+	capture_mouse()
+	self.global_position = Vector3(randi_range(1, 299), 20 ,randi_range(-149, 149))
+	await get_tree().create_timer(0.02).timeout
+	self.global_position.y = $GroundFinder.get_collision_point().y + 2
+	campfire.get_node("GPUParticles3D").visible = true 
+	var upTween = create_tween()
+	#upTween.tween_property(camera, "attributes.exposure_multiplier", 1.0, 3)
+	camera.attributes.exposure_multiplier = 1.0
+	wakeUpGraceTimer.start()
+	
 
 func spawnMonsters():
 	if CampfirePlaced:

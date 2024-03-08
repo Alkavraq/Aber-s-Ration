@@ -2,3 +2,4 @@ Aber: It seems I fell asleep
 Aber: I better not do that again...
 Aber: WhERe aM !????\
 I can feel my heart racing, better find that campfire
+do global.playerWakeUp()

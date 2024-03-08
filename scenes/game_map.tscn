@@ -29,7 +29,7 @@ glow_enabled = true
 volumetric_fog_enabled = true
 volumetric_fog_albedo = Color(0.333333, 0.333333, 0.333333, 1)
 
-[sub_resource type="Resource" id="Resource_n5v2c"]
+[sub_resource type="Resource" id="Resource_q0kke"]
 script = ExtResource("3_1prt4")
 amount = 1600
 enabled = true
@@ -38,7 +38,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 1
 
-[sub_resource type="Resource" id="Resource_ngyrx"]
+[sub_resource type="Resource" id="Resource_e5hrd"]
 script = ExtResource("4_f4px5")
 position = Vector3(0.15, 0.15, 0.15)
 rotation = Vector3(20, 360, 20)
@@ -49,7 +49,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_ui7cf"]
+[sub_resource type="Resource" id="Resource_3yvda"]
 script = ExtResource("5_bypai")
 iterations = 3
 offset_step = 0.2
@@ -61,7 +61,7 @@ custom_seed = 0
 restrict_height = true
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_td1my"]
+[sub_resource type="Resource" id="Resource_cuod6"]
 script = ExtResource("6_6xaj2")
 terrain_node = NodePath("../Terrain3D")
 align_with_collision_normal = true
@@ -71,7 +71,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_hv41l"]
+[sub_resource type="Resource" id="Resource_g7uya"]
 script = ExtResource("7_lf4c4")
 operation = 0
 position = Vector3(0, -0.2, 0)
@@ -81,11 +81,11 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_1ivxh"]
+[sub_resource type="Resource" id="Resource_qgrhe"]
 script = ExtResource("2_0b78q")
-stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_n5v2c"), SubResource("Resource_ngyrx"), SubResource("Resource_ui7cf"), SubResource("Resource_td1my"), SubResource("Resource_hv41l")])
+stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_q0kke"), SubResource("Resource_e5hrd"), SubResource("Resource_3yvda"), SubResource("Resource_cuod6"), SubResource("Resource_g7uya")])
 
-[sub_resource type="Resource" id="Resource_anwa0"]
+[sub_resource type="Resource" id="Resource_k6eg5"]
 script = ExtResource("8_e4ben")
 item_length = 3.53
 ignore_slopes = false
@@ -95,7 +95,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_15xfe"]
+[sub_resource type="Resource" id="Resource_sk0t2"]
 script = ExtResource("4_f4px5")
 position = Vector3(0.001, 0.001, 0.001)
 rotation = Vector3(0.001, 0.001, 0.001)
@@ -106,7 +106,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_mkrau"]
+[sub_resource type="Resource" id="Resource_stvgi"]
 script = ExtResource("9_ls4xv")
 operation = 0
 rotation = Vector3(0, 0, 0)
@@ -116,7 +116,7 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 2
 
-[sub_resource type="Resource" id="Resource_8sgnc"]
+[sub_resource type="Resource" id="Resource_83ae0"]
 script = ExtResource("6_6xaj2")
 terrain_node = NodePath("../Terrain3D")
 align_with_collision_normal = false
@@ -126,9 +126,9 @@ custom_seed = 0
 restrict_height = false
 reference_frame = 0
 
-[sub_resource type="Resource" id="Resource_05o5u"]
+[sub_resource type="Resource" id="Resource_cjd0v"]
 script = ExtResource("2_0b78q")
-stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_anwa0"), SubResource("Resource_15xfe"), SubResource("Resource_mkrau"), SubResource("Resource_8sgnc")])
+stack = Array[Resource("res://addons/proton_scatter/src/modifiers/base_modifier.gd")]([SubResource("Resource_k6eg5"), SubResource("Resource_sk0t2"), SubResource("Resource_stvgi"), SubResource("Resource_83ae0")])
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_suu4y"]
 size = Vector3(0.841309, 13.4396, 143.872)
@@ -153,10 +153,10 @@ environment = SubResource("Environment_nkkgk")
 [node name="Map" parent="." instance=ExtResource("1_uh3fg")]
 
 [node name="ProtonScatterTrees" parent="Map" index="3"]
-modifier_stack = SubResource("Resource_1ivxh")
+modifier_stack = SubResource("Resource_qgrhe")
 
 [node name="ProtonScatterFences" parent="Map" index="4"]
-modifier_stack = SubResource("Resource_05o5u")
+modifier_stack = SubResource("Resource_cjd0v")
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("2_3f78r")]
 transform = Transform3D(0.402187, 0, -0.915557, 0, 1, 0, 0.915557, 0, 0.402187, -7.31347, 1.49205, 0)

@@ -12,3 +12,6 @@ func _process(delta: float) -> void:
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		get_tree().quit()
+
+func playerWakeUp():
+	Player.wakeUP = true
