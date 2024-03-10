@@ -147,8 +147,9 @@ func _physics_process(delta: float) -> void:
 		killing = false
 					
 	#if mouse_captured: _handle_joypad_camera_rotation(delta)
-	if CampfirePlaced:
+	if CampfirePlaced and !global.winV:
 		if forceSleep:
+			watchTime.ToPause = true
 			forceSleep = false
 			sleeping = true
 			var downTween = create_tween()
@@ -159,6 +160,7 @@ func _physics_process(delta: float) -> void:
 		#camera.attributes.exposure_multiplier = 0.0
 		if wakeUpGraceTimer.is_stopped():
 			if (sleepiness() <= 0.05 and Dialogic.current_timeline == null):
+				watchTime.ToPause = true
 				sleeping = true
 				var downTween = create_tween()
 				downTween.tween_property(camera, "attributes:exposure_multiplier", 0, 1)
@@ -189,6 +191,8 @@ func FwakeUP():
 	campfire.get_node("GPUParticles3D").visible = true 
 	var upTween = create_tween()
 	upTween.tween_property(camera, "attributes:exposure_multiplier", 1.0, 2)
+	watchTime.ToPause = false
+	watchTime.addRand = true
 	#camera.attributes.exposure_multiplier = 1.0
 	wakeUpGraceTimer.start()
 	

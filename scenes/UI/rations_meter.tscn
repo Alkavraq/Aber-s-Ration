@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://of8ap7rcc8ms"]
+[gd_scene load_steps=25 format=3 uid="uid://of8ap7rcc8ms"]
 
 [ext_resource type="Script" path="res://scenes/UI/C.gd" id="1_033ng"]
 [ext_resource type="Script" path="res://scenes/UI/HeartRate.gd" id="1_fohfv"]
@@ -15,6 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://buv5pd4wnm31r" path="res://addons/ActionIcon/Keyboard/R.png" id="4_t5n6y"]
 [ext_resource type="Texture2D" uid="uid://cqs62agnvn747" path="res://addons/ActionIcon/Keyboard/F.png" id="6_uhj0y"]
 [ext_resource type="Script" path="res://scenes/UI/Labelf.gd" id="7_mgwxe"]
+[ext_resource type="Texture2D" uid="uid://b7mexqv3v5ifs" path="res://assets/2d/Icons/WatchFace.png" id="16_tvqr4"]
+[ext_resource type="Texture2D" uid="uid://duouxdya301op" path="res://assets/2d/Icons/WatchHand.png" id="17_8wgbu"]
+[ext_resource type="Script" path="res://scenes/UI/hand.gd" id="18_hhgei"]
 
 [sub_resource type="Theme" id="Theme_7qkf0"]
 default_base_scale = 1.0
@@ -223,5 +226,42 @@ texture = ExtResource("2_jp02a")
 [node name="FoodTexture" type="TextureRect" parent="VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 texture = ExtResource("3_o6il6")
+
+[node name="Watch" type="Control" parent="."]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -7.78003
+offset_top = 8.98
+offset_right = 32.22
+offset_bottom = 48.98
+grow_horizontal = 0
+scale = Vector2(0.265, 0.265)
+mouse_filter = 2
+
+[node name="face" type="TextureRect" parent="Watch"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -720.0
+offset_bottom = 720.0
+grow_horizontal = 0
+texture = ExtResource("16_tvqr4")
+
+[node name="hand" type="TextureRect" parent="Watch"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -720.0
+offset_bottom = 720.0
+grow_horizontal = 0
+rotation = 3.05433
+pivot_offset = Vector2(370.255, 338.14)
+texture = ExtResource("17_8wgbu")
+script = ExtResource("18_hhgei")
 
 [connection signal="value_changed" from="VBoxContainer/HBoxContainer/HeartRate" to="VBoxContainer/HBoxContainer2/HeartTexture" method="_on_heart_rate_value_changed"]
