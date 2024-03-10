@@ -1,7 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://dfrfg7xbrn4hj"]
+[gd_scene load_steps=16 format=3 uid="uid://dfrfg7xbrn4hj"]
 
 [ext_resource type="PackedScene" uid="uid://cqy7vsinwtev2" path="res://assets/PolygonPacks/SM_Env_CampFire_01.fbx" id="1_3d531"]
 [ext_resource type="Texture2D" uid="uid://bywtfeemdxujx" path="res://assets/PolygonPacks/PolyAdventureTexture_01.png" id="2_w4gch"]
+[ext_resource type="Script" path="res://scenes/Inherited/campfireDetector.gd" id="3_ptwc2"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1xb8f"]
 resource_name = "blinn265"
@@ -87,7 +88,10 @@ particles_anim_loop = false
 [sub_resource type="QuadMesh" id="QuadMesh_iee12"]
 material = SubResource("StandardMaterial3D_fmcx2")
 
-[node name="Root Scene" groups=["campfire"] instance=ExtResource("1_3d531")]
+[sub_resource type="SphereShape3D" id="SphereShape3D_e1siy"]
+radius = 10.0
+
+[node name="Campfire" groups=["campfire"] instance=ExtResource("1_3d531")]
 
 [node name="RayCast3D" type="RayCast3D" parent="RootNode" index="0"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.19565, 0.401478)
@@ -110,3 +114,11 @@ randomness = 1.0
 draw_order = 3
 process_material = SubResource("ParticleProcessMaterial_ggkmb")
 draw_pass_1 = SubResource("QuadMesh_iee12")
+
+[node name="Area3D" type="Area3D" parent="." index="3"]
+script = ExtResource("3_ptwc2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0"]
+shape = SubResource("SphereShape3D_e1siy")
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

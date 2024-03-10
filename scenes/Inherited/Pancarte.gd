@@ -13,6 +13,7 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("interract") and %Sprite3D.visible:
 		%TextureRect.visible = !%TextureRect.visible
+		Player.clickedPancarte = true
 
 func showInterraction():
 	if !%Sprite3D.visible:

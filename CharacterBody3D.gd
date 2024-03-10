@@ -20,7 +20,7 @@ var walk_vel: Vector3 # Walking velocity
 var grav_vel: Vector3 # Gravity velocity 
 var jump_vel: Vector3 # Jumping velocity
 
-var CampfirePlaced = false
+static var CampfirePlaced = false
 var weaponArmed = false
 var campfire 
 var distanceToCampfire = 0.0
@@ -31,7 +31,9 @@ static var startMonitor = false
 static var wakeUP = false
 static var sleeping = false
 
-static var seenByMonstersCount = 0
+static var seenByMonstersCount = 0:
+	set(val):
+		seenByMonstersCount = clamp(val, 0, 20)
 const defaultHR = 80
 static var waterDepricationSpeed = 0.5
 static var CurrentWater = 100
@@ -39,6 +41,10 @@ static var foodDepricationSpeed = 0.3
 static var CurrentFood = 100
 static var heartRate = 80
 static var HRfromLooks:=0.0
+static var forceSleep := false
+static var clickedPancarte := false
+static var availableWater := 8
+static var availableFood := 5
 
 var globalDelta
 
@@ -69,7 +75,7 @@ func _process(delta: float) -> void:
 	if campfire :
 		var campArrow = $CampfireArrow
 		distanceToCampfire = self.global_position.distance_to(campfire.global_position)
-		if distanceToCampfire >= 10 and !sleeping:
+		if distanceToCampfire >= 15 and !sleeping:
 		#if distanceToCampfire >= 1:
 			campArrow.visible = true
 			if self.global_position.z-campfire.global_position.z >= 0:
@@ -83,7 +89,7 @@ func _process(delta: float) -> void:
 	setPosition = global_position
 
 func _unhandled_input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("campfire") and CampfirePlaced == false:
+	if Input.is_action_just_pressed("campfire") and CampfirePlaced == false and clickedPancarte:
 		$Camera3D/RayCast3D/Campfire.visible = !$Camera3D/RayCast3D/Campfire.visible
 	if Input.is_action_just_pressed("LMB") and $Camera3D/RayCast3D/Campfire.visible:
 		placeCampfire()
@@ -124,11 +130,20 @@ func _physics_process(delta: float) -> void:
 					
 	#if mouse_captured: _handle_joypad_camera_rotation(delta)
 	if CampfirePlaced:
+		if forceSleep:
+			forceSleep = false
+			sleeping = true
+			var downTween = create_tween()
+			downTween.tween_property(camera, "attributes:exposure_multiplier", 0, 1)
+			campfire.get_node("GPUParticles3D").visible = false
+			Dialogic.start("ContactSleep")
+			release_mouse()
 		#camera.attributes.exposure_multiplier = 0.0
 		if wakeUpGraceTimer.is_stopped():
-			if sleepiness() <= 0.05 and Dialogic.current_timeline == null:
+			if (sleepiness() <= 0.05 and Dialogic.current_timeline == null):
 				sleeping = true
-				camera.attributes.exposure_multiplier = 0.0
+				var downTween = create_tween()
+				downTween.tween_property(camera, "attributes:exposure_multiplier", 0, 1)
 				campfire.get_node("GPUParticles3D").visible = false
 				Dialogic.start("deathTimeline")
 				release_mouse()
@@ -144,6 +159,7 @@ func sleepiness():
 	camera.attributes.exposure_multiplier = clamp(camera.attributes.exposure_multiplier, 0, 2)
 	return camera.attributes.exposure_multiplier
 
+
 func FwakeUP():
 	wakeUpGraceTimer.start(30)
 	sleeping = false
@@ -154,8 +170,8 @@ func FwakeUP():
 	self.global_position.y = $GroundFinder.get_collision_point().y + 2
 	campfire.get_node("GPUParticles3D").visible = true 
 	var upTween = create_tween()
-	#upTween.tween_property(camera, "attributes.exposure_multiplier", 1.0, 3)
-	camera.attributes.exposure_multiplier = 1.0
+	upTween.tween_property(camera, "attributes:exposure_multiplier", 1.0, 2)
+	#camera.attributes.exposure_multiplier = 1.0
 	wakeUpGraceTimer.start()
 	
 
@@ -163,6 +179,7 @@ func spawnMonsters():
 	if CampfirePlaced:
 		if randi_range(1,300) == 1:
 			$MonsterSpawnAxis.rotate_y(deg_to_rad(randi_range(1, 360)))
+			#if ($MonsterSpawnAxis/MonsterSpawnPoint.global_position.x < campfire.global_position.x - 10 or $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x > campfire.global_position.x + 10) and ($MonsterSpawnAxis/MonsterSpawnPoint.global_position.z < campfire.global_position.z - 10 or $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z > campfire.global_position.z + 10):
 			if $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x > 1 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x < 300 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z > -150 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z < 150: 
 				var nouveauMonstre = MonsterScene.instantiate()
 				var groundFinderRay
@@ -184,7 +201,7 @@ func spawnMonsters():
 						nouveauMonstre.queue_free()
 					#print("3")
 					#nouveauMonstre.global_position.y += 1
-					
+			#else : print("trop pres")
 			#if playerMonsterScatter.modifier_stack.stack[0].instance_count == 0 :
 				#playerMonsterScatter.modifier_stack.stack[0].instance_count += 1
 				#print("one moreeeeeeeeeeeeeee")

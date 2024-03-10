@@ -26,6 +26,7 @@ directories/dch_directory={
 "Aber": "res://resources/dialogic/Aber.dch"
 }
 directories/dtl_directory={
+"ContactSleep": "res://resources/dialogic/ContactSleep.dtl",
 "deathTimeline": "res://resources/dialogic/deathTimeline.dtl"
 }
 glossary/default_case_sensitive=true

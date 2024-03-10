@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cs1fr3suo4sio"]
+[gd_scene load_steps=13 format=3 uid="uid://cs1fr3suo4sio"]
 
 [ext_resource type="Script" path="res://scenes/monster.gd" id="1_vfn1i"]
 
@@ -139,6 +139,9 @@ _data = {
 "RESET": SubResource("Animation_d467x")
 }
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ac6lg"]
+size = Vector3(1, 1, 0.680664)
+
 [node name="Monster" type="StaticBody3D" groups=["monster"]]
 collision_layer = 16
 collision_mask = 0
@@ -173,3 +176,13 @@ collision_mask = 33
 [node name="GroundFinder" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.480802, 0)
 target_position = Vector3(0, -30, 0)
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.381781)
+shape = SubResource("BoxShape3D_ac6lg")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

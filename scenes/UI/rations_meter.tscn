@@ -1,12 +1,30 @@
-[gd_scene load_steps=11 format=3 uid="uid://of8ap7rcc8ms"]
+[gd_scene load_steps=22 format=3 uid="uid://of8ap7rcc8ms"]
 
+[ext_resource type="Script" path="res://scenes/UI/C.gd" id="1_033ng"]
 [ext_resource type="Script" path="res://scenes/UI/HeartRate.gd" id="1_fohfv"]
+[ext_resource type="Texture2D" uid="uid://xo0y1l4p536k" path="res://addons/ActionIcon/Keyboard/C.png" id="1_p8jku"]
 [ext_resource type="Texture2D" uid="uid://dhd3cku74os2g" path="res://assets/2d/Icons/HeartRate.png" id="1_yw3pj"]
 [ext_resource type="Script" path="res://scenes/UI/Water.gd" id="2_ahvje"]
 [ext_resource type="Texture2D" uid="uid://bpjitb6bho035" path="res://assets/2d/Icons/Water.png" id="2_jp02a"]
 [ext_resource type="Script" path="res://scenes/UI/HeartTexture.gd" id="2_x5pqa"]
+[ext_resource type="Texture2D" uid="uid://djqb4jsitv2dv" path="res://assets/2d/Icons/bottle-of-water.png" id="3_8b2p1"]
 [ext_resource type="Texture2D" uid="uid://cnjqai4ar01s1" path="res://assets/2d/Icons/Food.png" id="3_o6il6"]
 [ext_resource type="Script" path="res://scenes/UI/Food.gd" id="3_wwkhe"]
+[ext_resource type="Script" path="res://scenes/UI/Label2.gd" id="4_7hgn1"]
+[ext_resource type="Texture2D" uid="uid://v27v7wmwb4s0" path="res://assets/2d/Icons/lunchbox.png" id="4_61xvg"]
+[ext_resource type="Texture2D" uid="uid://buv5pd4wnm31r" path="res://addons/ActionIcon/Keyboard/R.png" id="4_t5n6y"]
+[ext_resource type="Texture2D" uid="uid://cqs62agnvn747" path="res://addons/ActionIcon/Keyboard/F.png" id="6_uhj0y"]
+[ext_resource type="Script" path="res://scenes/UI/Labelf.gd" id="7_mgwxe"]
+
+[sub_resource type="Theme" id="Theme_7qkf0"]
+default_base_scale = 1.0
+default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_wf7at"]
+default_font_size = 25
+
+[sub_resource type="Theme" id="Theme_n7mop"]
+default_font_size = 25
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t8jif"]
 bg_color = Color(0.956863, 0.262745, 0.211765, 1)
@@ -36,6 +54,114 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -222.55
+offset_top = -491.89
+offset_right = 59.4512
+offset_bottom = -183.889
+grow_horizontal = 0
+grow_vertical = 0
+scale = Vector2(0.76, 0.76)
+size_flags_horizontal = 8
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="C" type="HBoxContainer" parent="VBoxContainer2"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+script = ExtResource("1_033ng")
+
+[node name="Label" type="Label" parent="VBoxContainer2/C"]
+layout_mode = 2
+theme = SubResource("Theme_7qkf0")
+text = "Place campfire"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer2/C"]
+layout_mode = 2
+texture = ExtResource("1_p8jku")
+
+[node name="w" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 10
+
+[node name="Label" type="Label" parent="VBoxContainer2/w"]
+layout_mode = 2
+theme = SubResource("Theme_7qkf0")
+text = "Drink"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer2/w"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_8b2p1")
+
+[node name="Label2" type="Label" parent="VBoxContainer2/w/TextureRect"]
+modulate = Color(0.317647, 0.203922, 0.6, 1)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -7.0
+offset_top = -35.0
+offset_right = 7.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 0
+size_flags_vertical = 8
+theme = SubResource("Theme_wf7at")
+text = "8"
+script = ExtResource("4_7hgn1")
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer2/w"]
+layout_mode = 2
+texture = ExtResource("4_t5n6y")
+
+[node name="f" type="HBoxContainer" parent="VBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="Label2" type="Label" parent="VBoxContainer2/f"]
+layout_mode = 2
+theme = SubResource("Theme_7qkf0")
+text = "Eat"
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer2/f"]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("4_61xvg")
+
+[node name="Label" type="Label" parent="VBoxContainer2/f/TextureRect"]
+modulate = Color(0.686275, 0.117647, 0.278431, 1)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -14.0
+offset_top = -35.0
+grow_horizontal = 0
+grow_vertical = 0
+theme = SubResource("Theme_n7mop")
+text = "8"
+script = ExtResource("7_mgwxe")
+
+[node name="TextureRect2" type="TextureRect" parent="VBoxContainer2/f"]
+layout_mode = 2
+texture = ExtResource("6_uhj0y")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1

@@ -1,0 +1,4 @@
+Aber: Shit! I think I had a nightmare
+Aber: Oh no, I'm still in this scarry forest!
+Aber: Better find that campfire quick!
+do global.playerWakeUp()

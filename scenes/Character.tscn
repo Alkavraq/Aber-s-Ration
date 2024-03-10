@@ -79,6 +79,7 @@ autostart = true
 target_position = Vector3(0, -40, 0)
 
 [node name="CampfireArrow" type="Node3D" parent="."]
+visible = false
 
 [node name="Sprite3D" type="Sprite3D" parent="CampfireArrow"]
 transform = Transform3D(-3.27835e-08, 0.75, 3.27835e-08, 0, -3.27835e-08, 0.75, 0.75, 3.27835e-08, 1.43301e-15, 0, -0.567686, 1.13783)
