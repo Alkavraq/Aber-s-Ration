@@ -86,6 +86,14 @@ transform = Transform3D(-3.27835e-08, 0.75, 3.27835e-08, 0, -3.27835e-08, 0.75, 
 modulate = Color(1, 1, 1, 0.188235)
 texture = ExtResource("7_6ih56")
 
+[node name="SpearArrow" type="Node3D" parent="."]
+visible = false
+
+[node name="Sprite3D" type="Sprite3D" parent="SpearArrow"]
+transform = Transform3D(-3.27835e-08, 0.75, 3.27835e-08, 0, -3.27835e-08, 0.75, 0.75, 3.27835e-08, 1.43301e-15, 0, -0.567686, 1.13783)
+modulate = Color(0.0901961, 0.521569, 1, 0.345098)
+texture = ExtResource("7_6ih56")
+
 [connection signal="body_entered" from="Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area" to="." method="_on_area_body_entered"]
 [connection signal="body_exited" from="Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area" to="." method="_on_area_body_exited"]
 [connection signal="animation_finished" from="Camera3D/PitchFork/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

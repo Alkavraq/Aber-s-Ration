@@ -21,6 +21,9 @@ func _physics_process(delta: float) -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if hitground and visible :
+		Player.searchedWeaponPos = self.global_position
+		
 	if Player.Weapon.visible:
 		self.visible = false
 		SpearKey.visible = false
@@ -29,6 +32,7 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("interract") and hitground and SpearKey.visible:
+		Player.searchedWeaponPos = null
 		SpearKey.visible = false
 		Player.Weapon.visible = true
 		self.visible = false
@@ -85,6 +89,8 @@ func _integrate_forces(state: PhysicsDirectBodyState3D) -> void:
 func _on_area_body_entered(body: Node3D) -> void:
 	#print(body)
 	if body.is_in_group("monster"):
+		
+		Player.searchedWeaponPos = null
 		
 		SpearKey.visible = false
 		Player.Weapon.visible = true

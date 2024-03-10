@@ -30,6 +30,7 @@ static var setPosition
 static var startMonitor = false
 static var wakeUP = false
 static var sleeping = false
+static var searchedWeaponPos
 
 static var seenByMonstersCount = 0:
 	set(val):
@@ -48,6 +49,7 @@ static var availableFood := 5
 
 var globalDelta
 
+@onready var weaponArrow = $SpearArrow
 @onready var camera: Camera3D = $Camera3D
 @onready var RealCampfire = preload("res://scenes/Inherited/CampFire.tscn")
 @onready var WeaponAnimationPlayer = $Camera3D/PitchFork/AnimationPlayer
@@ -72,6 +74,14 @@ func _process(delta: float) -> void:
 		$Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area.monitoring = true
 		startMonitor = false
 	#print(seenByMonstersCount)
+	if searchedWeaponPos:
+		var distanceToWeapon = self.global_position.distance_to(searchedWeaponPos)
+		weaponArrow.visible = true
+		if self.global_position.z-searchedWeaponPos.z >= 0:
+				weaponArrow.rotation.y = (atan((self.global_position.x-searchedWeaponPos.x)/(self.global_position.z-searchedWeaponPos.z))) -90
+		else : 
+			weaponArrow.rotation.y = (atan((self.global_position.x-searchedWeaponPos.x)/(self.global_position.z-searchedWeaponPos.z))) +45
+	else : weaponArrow.visible = false
 	if campfire :
 		var campArrow = $CampfireArrow
 		distanceToCampfire = self.global_position.distance_to(campfire.global_position)
@@ -89,6 +99,14 @@ func _process(delta: float) -> void:
 	setPosition = global_position
 
 func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("water") and availableWater > 0 and CurrentWater <= 95:
+		availableWater -= 1
+		var waTween = create_tween()
+		waTween.tween_property(self, "CurrentWater", CurrentWater+20, 0.5)
+	if Input.is_action_just_pressed("food") and availableFood > 0 and CurrentFood <= 95:
+		availableFood -= 1
+		var waFood = create_tween()
+		waFood.tween_property(self, "CurrentFood", CurrentFood+20, 0.5)
 	if Input.is_action_just_pressed("campfire") and CampfirePlaced == false and clickedPancarte:
 		$Camera3D/RayCast3D/Campfire.visible = !$Camera3D/RayCast3D/Campfire.visible
 	if Input.is_action_just_pressed("LMB") and $Camera3D/RayCast3D/Campfire.visible:
