@@ -3,7 +3,7 @@ class_name watchTime
 
 var started := false
 var endDeg = 175
-var time = 50
+var time = 400
 
 static var ToPause = false
 static var addRand = false
@@ -19,7 +19,7 @@ func _process(delta: float) -> void:
 		started = true
 		var appearTween = create_tween()
 		appearTween.tween_property(get_parent(), "modulate", Color(1,1,1,1), 1)
-	if started and !ToPause:
+	if started and !ToPause and !global.winV:
 		self.rotation += ((deg_to_rad(endDeg)-deg_to_rad(-50))/time) * delta
 		#WatchTween.tween_property(self, "rotation", deg_to_rad(175), 50)
 		#await WatchTween.finished

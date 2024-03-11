@@ -25,7 +25,7 @@ func _process(delta: float) -> void:
 			pancarte.call("showInterraction")
 	
 	else:
-		if lance and shown:
+		if lance and shown and lance.visible:
 			lance.call("showKey", false)
 			shown = false
 		if pancarte:

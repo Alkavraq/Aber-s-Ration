@@ -14,6 +14,11 @@ func _ready() -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
+	if global.winV:
+		$AnimationPlayer.play("Dead")
+		if counted:
+			Player.seenByMonstersCount -= 1
+			
 	if playerFinder.is_colliding() and look:
 		if playerFinder.get_collider().is_in_group("player"):
 			if !counted:

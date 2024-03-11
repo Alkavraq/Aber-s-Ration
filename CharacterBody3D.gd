@@ -44,8 +44,9 @@ static var heartRate = 80
 static var HRfromLooks:=0.0
 static var forceSleep := false
 static var clickedPancarte := false
-static var availableWater := 8
-static var availableFood := 5
+
+static var availableWater := 5
+static var availableFood := 3
 
 var globalDelta
 
@@ -122,6 +123,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		showCrosshair(false)
 		WeaponAnimationPlayer.play_backwards("ReadyToFire")
 	if Input.is_action_just_pressed("LMB") and weaponArmed:
+		$ThrowingSound.play()
 		throwWeapon()
 	if event is InputEventMouseMotion:
 		look_dir = event.relative * 0.001
@@ -167,8 +169,12 @@ func _physics_process(delta: float) -> void:
 				campfire.get_node("GPUParticles3D").visible = false
 				Dialogic.start("deathTimeline")
 				release_mouse()
-	spawnMonsters()
 	depricate(delta)
+	if !global.winV:
+		spawnMonsters()
+	else :
+		var upTween = create_tween()
+		upTween.tween_property(camera, "attributes:exposure_multiplier", 1.0, 1)
 	velocity = _walk(delta) + _gravity(delta) + _jump(delta)
 	if !sleeping:
 		move_and_slide()
@@ -199,7 +205,7 @@ func FwakeUP():
 
 func spawnMonsters():
 	if CampfirePlaced:
-		if randi_range(1,300) == 1:
+		if randi_range(1,250) == 1:
 			$MonsterSpawnAxis.rotate_y(deg_to_rad(randi_range(1, 360)))
 			#if ($MonsterSpawnAxis/MonsterSpawnPoint.global_position.x < campfire.global_position.x - 10 or $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x > campfire.global_position.x + 10) and ($MonsterSpawnAxis/MonsterSpawnPoint.global_position.z < campfire.global_position.z - 10 or $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z > campfire.global_position.z + 10):
 			if $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x > 1 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x < 300 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z > -150 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z < 150: 
@@ -257,11 +263,12 @@ func throwWeapon():
 func depricate(delta):
 	#print(HRfromLooks)
 	heartRate = defaultHR + ((clamp((distanceToCampfire-15), 0, 200))/2.5) + HRfromLooks
-	var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
-	if randi_range(1, 2) == 1:
-		CurrentFood = CurrentFood - (foodDepricationSpeed + extraDepricationFromHeartRate) * delta
-	if randi_range(1, 2) == 1:
-		CurrentWater = CurrentWater - (waterDepricationSpeed + extraDepricationFromHeartRate) * delta
+	if !global.winV:
+		var extraDepricationFromHeartRate = clamp(((heartRate - 80) * 0.02), 0, 1000)
+		if randi_range(1, 2) == 1:
+			CurrentFood = CurrentFood - (foodDepricationSpeed + extraDepricationFromHeartRate) * delta
+		if randi_range(1, 2) == 1:
+			CurrentWater = CurrentWater - (waterDepricationSpeed + extraDepricationFromHeartRate) * delta
 
 func showCrosshair(value):
 	if value:
@@ -303,6 +310,10 @@ func _rotate_camera(sens_mod: float = 1.0) -> void:
 
 func _walk(delta: float) -> Vector3:
 	move_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards")
+	print(move_dir)
+	if move_dir != Vector2(0,0) and !$WalkingSound.playing:
+		$WalkingSound.play()
+	elif move_dir == Vector2(0,0): $WalkingSound.stop()
 	var _forward: Vector3 = camera.global_transform.basis * Vector3(move_dir.x, 0, move_dir.y)
 	var walk_dir: Vector3 = Vector3(_forward.x, 0, _forward.z).normalized()
 	walk_vel = walk_vel.move_toward(walk_dir * speed * move_dir.length(), acceleration * delta)
@@ -314,7 +325,11 @@ func _gravity(delta: float) -> Vector3:
 
 func _jump(delta: float) -> Vector3:
 	if jumping:
-		if is_on_floor(): jump_vel = Vector3(0, sqrt(4 * jump_height * gravity), 0)
+		if is_on_floor(): 
+			jump_vel = Vector3(0, sqrt(4 * jump_height * gravity), 0)
+			$JumpingSound.play()
+			$WalkingSound.stop()
+			
 		jumping = false
 		return jump_vel
 	jump_vel = Vector3.ZERO if is_on_floor() else jump_vel.move_toward(Vector3.ZERO, gravity * delta)

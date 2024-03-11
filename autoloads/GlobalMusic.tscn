@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://dqwksmdp285lw"]
+
+[ext_resource type="AudioStream" uid="uid://cioohnyc8hhtj" path="res://assets/audio/music/Jeu.mp3" id="1_22u5a"]
+
+[node name="GlobalMusic" type="Node"]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_22u5a")
+autoplay = true
