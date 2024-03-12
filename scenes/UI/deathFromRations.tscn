@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://kqjk1ug30nv5"]
+
+[ext_resource type="Texture2D" uid="uid://beq6aw3pybvol" path="res://assets/2d/diapos/badEnd.png" id="1_a3aoc"]
+[ext_resource type="Script" path="res://scenes/UI/deathFromRations.gd" id="1_vtnfs"]
+
+[node name="DeathFromRations" type="Node3D"]
+script = ExtResource("1_vtnfs")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_a3aoc")

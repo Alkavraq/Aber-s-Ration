@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=3 uid="uid://cl3lgkuot4l7o"]
+
+[ext_resource type="Script" path="res://scenes/UI/Win.gd" id="1_t3cy3"]
+[ext_resource type="Texture2D" uid="uid://beq6aw3pybvol" path="res://assets/2d/diapos/badEnd.png" id="2_g026v"]
+
+[node name="Win" type="Node3D"]
+script = ExtResource("1_t3cy3")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Control"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_g026v")

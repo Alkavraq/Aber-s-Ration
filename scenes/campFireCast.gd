@@ -3,6 +3,7 @@ class_name rayon
 
 var pancarte
 var lance
+var voiture
 static var shown
 
 # Called when the node enters the scene tree for the first time.
@@ -23,11 +24,17 @@ func _process(delta: float) -> void:
 		if get_collider().has_method("showInterraction"):
 			pancarte = get_collider()
 			pancarte.call("showInterraction")
+		if get_collider().is_in_group("car"):
+			voiture = get_collider()
+			voiture.call("showM")
 	
 	else:
-		if lance and shown and lance.visible:
-			lance.call("showKey", false)
-			shown = false
+		if lance: 
+			if shown and lance.visible:
+				lance.call("showKey", false)
+				shown = false
 		if pancarte:
 			pancarte.call("hideInterraction")
+		if voiture:
+			voiture.call("hideM")
 		$Campfire.position.z = -4.737 

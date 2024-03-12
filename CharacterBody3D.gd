@@ -49,6 +49,7 @@ static var availableWater := 5
 static var availableFood := 3
 
 var globalDelta
+var defVol
 
 @onready var weaponArrow = $SpearArrow
 @onready var camera: Camera3D = $Camera3D
@@ -65,10 +66,30 @@ var globalDelta
 static var Weapon
 
 func _ready() -> void:
+	defVol = $Camera3D/PitchFork/hittingSound.volume_db
 	Weapon=WeaponLoc
 	capture_mouse()
 
 func _process(delta: float) -> void:
+	if !Weapon.visible:
+		$Camera3D/PitchFork/hittingSound.volume_db = -100
+	else : $Camera3D/PitchFork/hittingSound.volume_db = defVol
+	
+	if global.wannaFall:
+		rotation.y = camera.rotation.y
+		$Camera3D/AnimationPlayer.play("cameraFall")
+	if CurrentFood < 1 and !sleeping:
+		release_mouse()
+		sleeping = true
+		Dialogic.start("hungry")
+		var upTween = create_tween()
+		upTween.tween_property(camera, "attributes:exposure_multiplier", 1.0, 2)
+	elif CurrentWater < 1 and !sleeping:
+		release_mouse()
+		sleeping = true
+		Dialogic.start("thirsty")
+		var upTween = create_tween()
+		upTween.tween_property(camera, "attributes:exposure_multiplier", 1.0, 2)
 	if wakeUP:
 		FwakeUP()
 	if startMonitor:
@@ -99,6 +120,12 @@ func _process(delta: float) -> void:
 	globalDelta = delta
 	setPosition = global_position
 
+func darken():
+	var downTween = create_tween()
+	downTween.tween_property(camera, "attributes:exposure_multiplier", 0, 0.6)
+	await downTween.finished
+	get_tree().change_scene_to_file("res://scenes/UI/deathFromRations.tscn")
+
 func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("water") and availableWater > 0 and CurrentWater <= 95:
 		availableWater -= 1
@@ -123,7 +150,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		showCrosshair(false)
 		WeaponAnimationPlayer.play_backwards("ReadyToFire")
 	if Input.is_action_just_pressed("LMB") and weaponArmed:
-		$ThrowingSound.play()
 		throwWeapon()
 	if event is InputEventMouseMotion:
 		look_dir = event.relative * 0.001
@@ -173,6 +199,8 @@ func _physics_process(delta: float) -> void:
 	if !global.winV:
 		spawnMonsters()
 	else :
+		get_parent().get_node("Car").visible = true
+		get_parent().get_node("Car").get_node("CollisionShape3D").disabled = false
 		var upTween = create_tween()
 		upTween.tween_property(camera, "attributes:exposure_multiplier", 1.0, 1)
 	velocity = _walk(delta) + _gravity(delta) + _jump(delta)
@@ -253,6 +281,7 @@ func spawnMonsters():
 
 func throwWeapon():
 	if Weapon.visible == true:
+		$ThrowingSound.play()
 		Weapon.visible = false
 		$Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area.monitoring = false
 		var thrownWeapon = WeaponThrowed.instantiate()
@@ -310,7 +339,7 @@ func _rotate_camera(sens_mod: float = 1.0) -> void:
 
 func _walk(delta: float) -> Vector3:
 	move_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backwards")
-	print(move_dir)
+	#print(move_dir)
 	if move_dir != Vector2(0,0) and !$WalkingSound.playing:
 		$WalkingSound.play()
 	elif move_dir == Vector2(0,0): $WalkingSound.stop()

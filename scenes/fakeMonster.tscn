@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=3 uid="uid://btie2uulql6y6"]
+
+[ext_resource type="Script" path="res://scenes/fakeMonster.gd" id="1_q6du5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rxipm"]
+resource_local_to_scene = true
+albedo_color = Color(0.831373, 0, 0.12549, 1)
+emission_enabled = true
+emission = Color(0.290196, 0.0588235, 0.0666667, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_tnneo"]
+material = SubResource("StandardMaterial3D_rxipm")
+radius = 0.05
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yv0uo"]
+resource_local_to_scene = true
+albedo_color = Color(0.831373, 0, 0.12549, 1)
+emission_enabled = true
+emission = Color(0.290196, 0.0588235, 0.0666667, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_x25qd"]
+material = SubResource("StandardMaterial3D_yv0uo")
+radius = 0.05
+height = 0.1
+
+[node name="FakeMonster" type="Node3D"]
+script = ExtResource("1_q6du5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, -0.2, 0.0547736, -0.0523868)
+mesh = SubResource("SphereMesh_tnneo")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, -8.74228e-08, 3.82137e-15, 0, -4.37114e-08, -1, 8.74228e-08, -1, 4.37114e-08, 0.2, 0.0547736, -0.0523868)
+mesh = SubResource("SphereMesh_x25qd")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 25.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

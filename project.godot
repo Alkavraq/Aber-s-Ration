@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Aber's Ration"
-run/main_scene="res://scenes/game_map.tscn"
+config/name="Aber's Rations"
+run/main_scene="res://scenes/UI/main_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -28,7 +28,12 @@ directories/dch_directory={
 }
 directories/dtl_directory={
 "ContactSleep": "res://resources/dialogic/ContactSleep.dtl",
-"deathTimeline": "res://resources/dialogic/deathTimeline.dtl"
+"StartText": "res://resources/dialogic/StartText.dtl",
+"badEndText": "res://resources/dialogic/badEndText.dtl",
+"deathTimeline": "res://resources/dialogic/deathTimeline.dtl",
+"hungry": "res://resources/dialogic/hungry.dtl",
+"semiBadEndText": "res://resources/dialogic/semiBadEndText.dtl",
+"thirsty": "res://resources/dialogic/thirsty.dtl"
 }
 glossary/default_case_sensitive=true
 layout/style_list=[]
@@ -57,6 +62,10 @@ history/visited_event_history_enabled=false
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/mode=2
+
+[editor]
+
+movie_writer/movie_file="C:/Andrei/Blender/grabbedStill.avi"
 
 [editor_plugins]
 

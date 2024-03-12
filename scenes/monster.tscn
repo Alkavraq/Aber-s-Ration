@@ -17,7 +17,7 @@ resource_local_to_scene = true
 material = SubResource("StandardMaterial3D_tshkj")
 height = 0.1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rxipm"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mw88f"]
 resource_local_to_scene = true
 albedo_color = Color(0.831373, 0, 0.12549, 1)
 emission_enabled = true
@@ -25,11 +25,11 @@ emission = Color(0.290196, 0.0588235, 0.0666667, 1)
 emission_energy_multiplier = 16.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_a2sig"]
-material = SubResource("StandardMaterial3D_rxipm")
+material = SubResource("StandardMaterial3D_mw88f")
 radius = 0.05
 height = 0.1
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yv0uo"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k7q7e"]
 resource_local_to_scene = true
 albedo_color = Color(0.831373, 0, 0.12549, 1)
 emission_enabled = true
@@ -37,7 +37,7 @@ emission = Color(0.290196, 0.0588235, 0.0666667, 1)
 emission_energy_multiplier = 16.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_6ma01"]
-material = SubResource("StandardMaterial3D_yv0uo")
+material = SubResource("StandardMaterial3D_k7q7e")
 radius = 0.05
 height = 0.1
 
