@@ -31,6 +31,7 @@ directories/dtl_directory={
 "StartText": "res://resources/dialogic/StartText.dtl",
 "badEndText": "res://resources/dialogic/badEndText.dtl",
 "deathTimeline": "res://resources/dialogic/deathTimeline.dtl",
+"getToRoad": "res://resources/dialogic/getToRoad.dtl",
 "hungry": "res://resources/dialogic/hungry.dtl",
 "semiBadEndText": "res://resources/dialogic/semiBadEndText.dtl",
 "thirsty": "res://resources/dialogic/thirsty.dtl"

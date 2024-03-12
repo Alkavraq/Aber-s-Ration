@@ -4,7 +4,10 @@ extends Node3D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	for x in 5:
+		var newEyes = fMonster.instantiate()
+		newEyes.global_position = Vector3(randi_range(-20,20), randi_range(-10, 10), 0)
+		add_child(newEyes)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

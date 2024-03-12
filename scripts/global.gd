@@ -4,6 +4,8 @@ var raiseSun = false
 var winV = false
 var wannaFall = false
 
+var loading
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -23,14 +25,22 @@ func playerWakeUp():
 	Player.wakeUP = true
 
 func win():
+	if !winV:
+		Dialogic.start("getToRoad")
 	winV = true
 	raiseSun = true
 
 func fallToGround():
 	wannaFall = true
 
+func loadGame():
+	loading = ResourceLoader.load_threaded_request("res://scenes/game_map.tscn")
+
 func switchToGame():
-	get_tree().change_scene_to_file("res://scenes/game_map.tscn")
+	var newScene = ResourceLoader.load_threaded_get("res://scenes/game_map.tscn")
+	get_tree().change_scene_to_packed(newScene)
+	#get_tree().change_scene_to_file("res://scenes/game_map.tscn")
 	
 func switchToLast():
 	get_tree().change_scene_to_file("res://scenes/UI/endMenu.tscn")
+

@@ -23,6 +23,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="PlayButton" type="Button" parent="MainMenu"]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -39,7 +40,6 @@ text = "Play again"
 script = ExtResource("3_7yxfw")
 
 [node name="Label" type="Label" parent="MainMenu"]
-visible = false
 modulate = Color(0.545098, 0.192157, 0.164706, 1)
 layout_mode = 1
 anchors_preset = 8
@@ -55,8 +55,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("3_hdh21")
 theme_override_font_sizes/font_size = 136
-text = "The end !
-Thank you for playing !"
+text = "The end !"
 horizontal_alignment = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
