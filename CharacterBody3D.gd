@@ -66,6 +66,8 @@ var defVol
 static var Weapon
 
 func _ready() -> void:
+	var upTween = create_tween()
+	upTween.tween_property(camera, "attributes:exposure_multiplier", 1.0, 2)
 	defVol = $Camera3D/PitchFork/hittingSound.volume_db
 	Weapon=WeaponLoc
 	capture_mouse()
@@ -124,6 +126,8 @@ func darken():
 	var downTween = create_tween()
 	downTween.tween_property(camera, "attributes:exposure_multiplier", 0, 0.6)
 	await downTween.finished
+	#var deathFromRationsScene = preload("res://scenes/UI/deathFromRations.tscn")
+	#FancyFade.horizontal_paint_brush(deathFromRationsScene.instantiate())
 	get_tree().change_scene_to_file("res://scenes/UI/deathFromRations.tscn")
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -135,7 +139,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		availableFood -= 1
 		var waFood = create_tween()
 		waFood.tween_property(self, "CurrentFood", CurrentFood+20, 0.5)
-	if Input.is_action_just_pressed("campfire") and CampfirePlaced == false and clickedPancarte:
+	if Input.is_action_just_pressed("campfire") and CampfirePlaced == false:
 		$Camera3D/RayCast3D/Campfire.visible = !$Camera3D/RayCast3D/Campfire.visible
 	if Input.is_action_just_pressed("LMB") and $Camera3D/RayCast3D/Campfire.visible:
 		placeCampfire()

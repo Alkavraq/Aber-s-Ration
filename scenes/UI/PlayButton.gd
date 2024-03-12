@@ -12,4 +12,6 @@ func _process(delta: float) -> void:
 
 
 func _on_pressed() -> void:
-	get_tree().change_scene_to_file("res://scenes/UI/StartStory.tscn")
+	var startStoryScene = preload("res://scenes/UI/StartStory.tscn")
+	FancyFade.horizontal_paint_brush(startStoryScene.instantiate())
+	#get_tree().change_scene_to_file("res://scenes/UI/StartStory.tscn")

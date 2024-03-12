@@ -38,9 +38,12 @@ func loadGame():
 
 func switchToGame():
 	var newScene = ResourceLoader.load_threaded_get("res://scenes/game_map.tscn")
+	#FancyFade.cross_fade(newScene)
 	get_tree().change_scene_to_packed(newScene)
 	#get_tree().change_scene_to_file("res://scenes/game_map.tscn")
 	
 func switchToLast():
-	get_tree().change_scene_to_file("res://scenes/UI/endMenu.tscn")
+	var lastScene = preload("res://scenes/UI/endMenu.tscn")
+	FancyFade.cross_fade(lastScene.instantiate())
+	#get_tree().change_scene_to_file("res://scenes/UI/endMenu.tscn")
 

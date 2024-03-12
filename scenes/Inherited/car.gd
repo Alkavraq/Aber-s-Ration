@@ -18,4 +18,6 @@ func hideM():
 func _input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("interract") and $Sprite3D.visible:
 		print("YOU WIN!!")
-		get_tree().change_scene_to_file("res://scenes/UI/Win.tscn")
+		var winScene = preload("res://scenes/UI/Win.tscn")
+		FancyFade.horizontal_paint_brush(winScene.instantiate())
+		#get_tree().change_scene_to_file("res://scenes/UI/Win.tscn")

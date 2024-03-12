@@ -19,6 +19,8 @@ config/icon="res://icon.svg"
 
 global="*res://scripts/global.gd"
 GlobalMusic="*res://autoloads/GlobalMusic.tscn"
+Transitions="*res://addons/transitions/Transitions.gd"
+FancyFade="*res://addons/transitions/FancyFade.gd"
 Dialogic="*res://addons/dialogic/Core/DialogicGameHandler.gd"
 
 [dialogic]
@@ -60,9 +62,10 @@ history/visited_event_history_enabled=false
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/size/mode=2
+window/stretch/mode="viewport"
 
 [editor]
 
@@ -70,7 +73,7 @@ movie_writer/movie_file="C:/Andrei/Blender/grabbedStill.avi"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/ActionIcon/plugin.cfg", "res://addons/dialogic/plugin.cfg", "res://addons/proton_scatter/plugin.cfg", "res://addons/terrain_3d/plugin.cfg")
+enabled=PackedStringArray("res://addons/ActionIcon/plugin.cfg", "res://addons/dialogic/plugin.cfg", "res://addons/proton_scatter/plugin.cfg", "res://addons/terrain_3d/plugin.cfg", "res://addons/transitions/plugin.cfg")
 
 [input]
 
