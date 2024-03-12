@@ -39,6 +39,7 @@ text = "Play again"
 script = ExtResource("3_7yxfw")
 
 [node name="Label" type="Label" parent="MainMenu"]
+visible = false
 modulate = Color(0.545098, 0.192157, 0.164706, 1)
 layout_mode = 1
 anchors_preset = 8

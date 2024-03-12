@@ -30,7 +30,7 @@ func _process(delta: float) -> void:
 	
 	else:
 		if lance: 
-			if shown and lance.visible:
+			if shown:
 				lance.call("showKey", false)
 				shown = false
 		if pancarte:

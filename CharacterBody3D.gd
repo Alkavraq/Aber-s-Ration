@@ -45,8 +45,8 @@ static var HRfromLooks:=0.0
 static var forceSleep := false
 static var clickedPancarte := false
 
-static var availableWater := 5
-static var availableFood := 3
+static var availableWater := 8
+static var availableFood := 6
 
 var globalDelta
 var defVol
