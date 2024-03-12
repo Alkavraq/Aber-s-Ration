@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="Aber's Rations"
+config/version="1.0"
 run/main_scene="res://scenes/UI/main_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
+config/icon="res://assets/2d/title2.png"
 
 [autoload]
 

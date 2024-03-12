@@ -243,8 +243,8 @@ func spawnMonsters():
 			if $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x > 1 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.x < 300 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z > -150 and $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z < 150: 
 				var nouveauMonstre = MonsterScene.instantiate()
 				var groundFinderRay
-				nouveauMonstre.global_position = Vector3($MonsterSpawnAxis/MonsterSpawnPoint.global_position.x, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.y + 10, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z) 
 				get_parent().add_child(nouveauMonstre)
+				nouveauMonstre.global_position = Vector3($MonsterSpawnAxis/MonsterSpawnPoint.global_position.x, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.y + 10, $MonsterSpawnAxis/MonsterSpawnPoint.global_position.z) 
 				groundFinderRay = nouveauMonstre.get_node("GroundFinder")
 				#for x in nouveauMonstre.get_children():
 					#if x.name == "GroundFinder":
@@ -289,8 +289,8 @@ func throwWeapon():
 		Weapon.visible = false
 		$Camera3D/PitchFork/SM_Wep_Pitchfork_01/Area.monitoring = false
 		var thrownWeapon = WeaponThrowed.instantiate()
-		thrownWeapon.global_transform = Weapon.global_transform
 		get_parent().add_child(thrownWeapon)
+		thrownWeapon.global_transform = Weapon.global_transform
 		thrownWeapon.throw()
 
 func depricate(delta):
@@ -316,9 +316,9 @@ func placeCampfire():
 	if $Camera3D/RayCast3D/Campfire/RootNode/RayCast3D.is_colliding():
 		CampfirePlaced = true
 		var newCampfire = RealCampfire.instantiate()
-		newCampfire.global_position = $Camera3D/RayCast3D/Campfire.global_position
 		$Camera3D/RayCast3D/Campfire.visible = false
 		get_parent().add_child(newCampfire)
+		newCampfire.global_position = $Camera3D/RayCast3D/Campfire.global_position
 		campfire = newCampfire
 		#playerMonsterScatter.rotate_y(deg_to_rad(randi_range(1, 360)))
 
