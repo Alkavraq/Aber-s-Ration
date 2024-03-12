@@ -13,5 +13,5 @@ func _physics_process(delta: float) -> void:
 	if randi_range(1,10) == 1 :
 		randfV = randf()*2
 	time += delta
-	self.light_energy = clamp(sin(time)+randfV+7, 1, 10)
+	self.light_energy = clamp(sin(time)+randfV+12, 1, 20)
 	

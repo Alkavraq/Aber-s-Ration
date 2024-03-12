@@ -5,6 +5,7 @@ var winV = false
 var wannaFall = false
 
 var loading
+var brightness = 1.01
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -20,6 +21,12 @@ func _process(delta: float) -> void:
 	##if event.is_action_pressed("ui_cancel"):
 		#print("quit!!")
 		#get_tree().quit()
+func _unhandled_input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("upBrightness"):
+		brightness += 0.05
+	if Input.is_action_just_pressed("downBrightness"):
+		brightness -= 0.05
+	
 
 func playerWakeUp():
 	Player.wakeUP = true
