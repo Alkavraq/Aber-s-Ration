@@ -14,6 +14,7 @@ config/name="Aber's Rations"
 config/version="1.0"
 run/main_scene="res://scenes/UI/main_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
+boot_splash/image="res://assets/2d/grabbedStill_041.png"
 config/icon="res://assets/2d/title2.png"
 
 [autoload]
@@ -65,7 +66,7 @@ history/visited_event_history_enabled=false
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=2
+window/size/mode=3
 window/stretch/mode="viewport"
 
 [editor]
