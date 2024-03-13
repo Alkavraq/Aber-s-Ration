@@ -161,6 +161,8 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("jump"): jumping = true
 
 func _physics_process(delta: float) -> void:
+	if $TopFinder.is_colliding():
+		self.global_position.y = $TopFinder.get_collision_point().y + 2.5
 	#print(monstresDansLance)
 	if WeaponAnimationPlayer.current_animation == "Hit" and killing:
 		#print("killim")

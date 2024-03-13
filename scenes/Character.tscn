@@ -163,6 +163,9 @@ autostart = true
 [node name="GroundFinder" type="RayCast3D" parent="."]
 target_position = Vector3(0, -40, 0)
 
+[node name="TopFinder" type="RayCast3D" parent="."]
+target_position = Vector3(0, 40, 0)
+
 [node name="CampfireArrow" type="Node3D" parent="."]
 visible = false
 
